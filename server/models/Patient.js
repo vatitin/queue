@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Patients = sequelize.define('Patients', {
+    const Patient = sequelize.define('Patient', {
         firstName: DataTypes.STRING,
         lastName: DataTypes.STRING,
         birthDate: DataTypes.DATEONLY,
@@ -10,5 +10,6 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
     })
-    return Patients;    
+
+    return Patient;    
 }
