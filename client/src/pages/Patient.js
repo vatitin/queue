@@ -11,7 +11,7 @@ function Patient() {
         .then((response) => {
             setPatientObject(response.data);
         })
-    });
+    }, [id]);
 
     return (
         <div>

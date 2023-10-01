@@ -14,8 +14,6 @@ function Home() {
   }, []);
 
   return (
-
-
     <div>
       <div className="patientEntry">
         <div>Patient hinzufügen</div>
