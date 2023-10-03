@@ -9,8 +9,11 @@ app.use(cors());
 const db = require('./models')
 
 //Routers
-const patientRouter = require('./routes/Patients')
-app.use('/patients', patientRouter)
+const patientsRouter = require('./routes/Patients')
+app.use('/patients', patientsRouter)
+
+const therapistsRouter = require('./routes/Therapists')
+app.use('/therapists', therapistsRouter)
 
 db.sequelize.sync().then(() => {
     app.listen(3001, () => {  

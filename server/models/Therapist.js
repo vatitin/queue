@@ -1,8 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
+
     const Therapist = sequelize.define('Therapist', {
         firstName: DataTypes.STRING,
         lastName: DataTypes.STRING,
-        birthDate: DataTypes.DATEONLY,
+        birthDate: DataTypes.DATE,
         gender: DataTypes.STRING,
         address: DataTypes.STRING,
         email: {
@@ -10,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
     })
-    
-    return Therapists;    
+
+    Therapist.associate = (models) => {
+      Therapist.belongsToMany(models.Patient, { through: models.PatientTherapist });
+    }
+    return Therapist;    
 }

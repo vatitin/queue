@@ -1,21 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const {Patients} = require('../models');
+const {Patient} = require('../models');
 
 router.get("/", async (req, res) => {
-    const patients = await Patients.findAll();
+    const patients = await Patient.findAll();
     res.json(patients);
 });
 
 router.get("/byId/:id", async (req, res) => {
     const id = req.params.id;
-    const patient = await Patients.findByPk(id);
+    const patient = await Patient.findByPk(id);
     res.json(patient);
 })
 
 router.post("/", async (req, res) => {
     const patient = req.body;
-    await Patients.create(patient)
+    await Patient.create(patient)
     res.json(patient);
 })
 
