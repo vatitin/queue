@@ -20,16 +20,29 @@ router.post("/", async (req, res) => {
                 })
 
                 await therapistUser.setTherapist(therapist);
-                
-                res.status(201).json(therapist);
+
+                return res.status(201).json(therapist);
 
             } catch (error) {
                 console.error('Error creating a TherapistUser: ', error);
-                res.status(500).json({ error: 'Internal Server Error' });
+                return res.status(500).json({ error: 'Internal Server Error' });
             }
         }
     })
 });
+
+router.post("/login", async (req, res) => {
+    const {email, password} = req.body;
+    const user = await TherapistUser.findOne({where: {email: email}})
+
+    if (!user) return res.json({ error: 'Der Nutzer existiert nicht' });
+
+    bcrypt.compare(password, user.password).then(match => {
+        if (!match) return res.json({ error: 'Nutzername oder Passwort ist falsch' });
+        
+        return res.json("U LOGGED IN! HURRAY")
+    })
+})
 
 /*
 router.get("/byId/:therapistId", async (req, res) => {
