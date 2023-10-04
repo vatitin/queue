@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Home } from "./pages/Home";
 import CreatePatient from "./pages/CreatePatient";
 import { Patient } from "./pages/Patient";
+import { Patients } from "./pages/Patients";
 
 function App() {
 
@@ -12,12 +13,12 @@ function App() {
       <Router>
         <div className="navbar">
           <Link to="/">Home</Link>
-          <Link to="/createPatient">Create A Patient</Link>
         </div>
         <Routes>
           <Route path="/" element={<Home/>} />
-          <Route path="/createPatient" element={<CreatePatient/>} />
+          <Route path="/addNewPatient/:therapistId" element={<CreatePatient/>} />
           <Route path="/patient/:id" element={<Patient/>} />
+          <Route path="/patients/:therapistId" element={<Patients/>} />
         </Routes>
       </Router>
     </div>

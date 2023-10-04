@@ -3,9 +3,13 @@ import {Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 
 function CreatePatient() {
+
+    let {therapistId} = useParams();
+
 
     const initialValues = {
         firstName: '',
@@ -16,11 +20,12 @@ function CreatePatient() {
     const validationSchema = Yup.object().shape({
         firstName: Yup.string().required('Bitte geben Sie einen Vorname ein'),
         lastName: Yup.string().required('Bitte geben Sie einen Nachname ein'),
-        email: Yup.string().min(3).max(30).required('Bitte geben Sie eine Email-Adresse ein')
-    });
+        email: Yup.string()
+        .email('Bitte geben Sie eine gültige E-Mail-Adresse ein')
+        .required('Bitte geben Sie eine E-Mail-Adresse ein')    });
 
     const onSubmit = (data) => {
-        axios.post('http://localhost:3001/patients', data).then(res => {
+        axios.post(`http://localhost:3001/therapists/addNewPatient/${therapistId}`, data).then(res => {
             navigate('/')
         })
     }

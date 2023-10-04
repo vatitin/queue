@@ -2,11 +2,17 @@ const express = require('express');
 const router = express.Router();
 const {Therapist, PatientTherapist, Patient} = require('../models');
 
-router.get("/byTherapistId/:therapistId", async (req, res) => {
+router.get("/byId/:therapistId", async (req, res) => {
+  try {
     const id = req.params.therapistId;
     const therapist = await Therapist.findByPk(id);
     const patients = await therapist.getPatients();
     res.json(patients);
+  }
+  catch (error) {
+    console.error('Error finding the Therapist or Patients of the Therapist:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 })
 
 router.post("/", async (req, res) => {
