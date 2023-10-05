@@ -16,7 +16,7 @@ const therapistsRouter = require('./routes/Therapists')
 app.use('/therapists', therapistsRouter)
 
 const therapistUserRouter = require('./routes/TherapistUsers')
-app.use('/therapistUsers', therapistUserRouter)
+app.use('/therapistAuth', therapistUserRouter)
 
 db.sequelize.sync().then(() => {
     app.listen(3001, () => {  

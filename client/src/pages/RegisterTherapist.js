@@ -1,37 +1,35 @@
-import React from 'react';
+import { React } from "react";
 import {Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
-import { useParams } from 'react-router-dom';
 
-
-function CreatePatient() {
-
-    let {therapistId} = useParams();
-
+function RegisterTherapist() {
 
     const initialValues = {
-        firstName: '',
-        lastName: '',
-        email: ''
+        email: '',
+        password: '',
     }
 
     const validationSchema = Yup.object().shape({
-        firstName: Yup.string().required('Bitte geben Sie einen Vorname ein'),
-        lastName: Yup.string().required('Bitte geben Sie einen Nachname ein'),
         email: Yup.string()
         .email('Bitte geben Sie eine gültige E-Mail-Adresse ein')
-        .required('Bitte geben Sie eine E-Mail-Adresse ein')    });
+        .required('Bitte geben Sie eine E-Mail-Adresse ein'),
+        password: Yup.string()
+        .required('Bitte geben Sie ein Passwort ein.')
+        .min(8, 'Passwort zu kurz - muss mindestend 8 Zeichen enthalten.')
+        .max(30, 'Passwort zu lang - darf mindestens 30 Zeichen enthalten.')
+        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
+            message: 'Passwort muss mindestens einen Großbuchstaben, Kleinbuchstaben, eine Zahl und Sonderzeichen enthalten.',
+            excludeEmptyString: true,
+        })
+    });
 
     const onSubmit = (data) => {
-        axios.post(`http://localhost:3001/therapists/addNewPatient/${therapistId}`, data).then(res => {
-            navigate('/')
+        axios.post(`http://localhost:3001/therapistAuth`, data).then(() => {
+            console.log(data);
         })
     }
-
-    let navigate = useNavigate();
-
+    
     return (
         <div className="CreatePatientPage">
             <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
@@ -48,12 +46,17 @@ function CreatePatient() {
                     <ErrorMessage name="email" component="div" className="error"/>
                     <Field id="inputPatient" name="email" placeholder="meine@email.com"/>
                     
-                    <button type="submit">Hinzufügen</button>
+                    <label>Passwort:</label>
+                    <ErrorMessage name="password" component="div" className="error"/>
+                    <Field id="inputPatient" name="password" type="password"/>
+                    
+                    <button type="submit">Registrieren</button>
 
                 </Form>
             </Formik>
         </div>
     );
+
 }
 
-export default CreatePatient;
+export {RegisterTherapist};
