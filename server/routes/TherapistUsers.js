@@ -5,10 +5,10 @@ const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
 const saltRounds = 12;
 const {sign} = require('jsonwebtoken');
-const {createTokens, validateToken} = require('../middlewares/AuthMiddleware')
+const {createTokens} = require('../middlewares/AuthMiddleware')
 //todo implement CSRF protenction and handle XSS attacks
  
-router.post("/", async (req, res) => {
+router.post("/register", async (req, res) => {
     const {email, password, } = req.body;
     bcrypt.hash(password, saltRounds, async (err, hash) => {
         if (err) {
@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
         //todo check if this is neccesary compared to above
         //res.cookie('accessToken', accessToken, {maxAge: 900000, httpOnly: true, secure: true});
 
-        return res.status(200).json(accessToken);
+        return res.status(200).json("authenticated");
     })
 })
 

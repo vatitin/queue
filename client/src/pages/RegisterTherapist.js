@@ -25,7 +25,7 @@ function RegisterTherapist() {
     });
 
     const onSubmit = (data) => {
-        axios.post(`http://localhost:3001/therapistAuth`, data).then(() => {
+        axios.post(`http://localhost:3001/therapistAuth/register`, data).then(() => {
             console.log(data);
         })
     }

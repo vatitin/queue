@@ -2,10 +2,12 @@ const express = require('express');
 const router = express.Router();
 const {Patient} = require('../models');
 
+//todo remove
 router.get("/", async (req, res) => {
     const patients = await Patient.findAll();
     res.json(patients);
 });
+
 
 router.get("/byId/:id", async (req, res) => {
     const id = req.params.id;

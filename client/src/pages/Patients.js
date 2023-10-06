@@ -10,7 +10,7 @@ function Patients() {
   let {therapistId} = useParams();
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/therapists/byId/${therapistId}`).then((response) => {
+    axios.get(`http://localhost:3001/therapists/addNewPatient/${therapistId}`).then((response) => {
       setPatients(response.data);
     });
   }, [therapistId]);

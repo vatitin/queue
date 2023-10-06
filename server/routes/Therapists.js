@@ -3,7 +3,7 @@ const router = express.Router();
 const {Therapist, PatientTherapist, Patient} = require('../models');
 const {validateToken} = require('../middlewares/AuthMiddleware')
 
-router.get("/byId/:therapistId", async (req, res) => {
+router.get("/addNewPatient/:therapistId", async (req, res) => {
   try {
     const id = req.params.therapistId;
     const therapist = await Therapist.findByPk(id);
