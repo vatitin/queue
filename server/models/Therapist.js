@@ -10,9 +10,8 @@ module.exports = (sequelize, DataTypes) => {
 
     Therapist.associate = (models) => {
       Therapist.belongsToMany(models.Patient, { through: models.PatientTherapist });
+      Therapist.belongsTo(models.TherapistUser);
     }
-    Therapist.associate = (models) => {
-        Therapist.belongsTo(models.TherapistUser);
-    };
+
     return Therapist;    
 }

@@ -11,7 +11,12 @@ function LoginTherapist() {
       password: password,
     };
     axios.post(`http://localhost:3001/therapistAuth/login`, data).then((response) => {
-      console.log(response.data);
+        if (response.data.error) {
+            return alert(response.data.error);
+        } else {
+        //todo change to cookie functionality
+        sessionStorage.setItem("accessToken", response.data)
+        }
     });
   };
 

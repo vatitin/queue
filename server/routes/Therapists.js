@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {Therapist, PatientTherapist, Patient} = require('../models');
+const {validateToken} = require('../middlewares/AuthMiddleware')
 
 router.get("/byId/:therapistId", async (req, res) => {
   try {
@@ -15,20 +16,25 @@ router.get("/byId/:therapistId", async (req, res) => {
   }
 })
 
+router.get("/myProfile", validateToken, async (req, res) =>  {
+  res.json("profile");
+})
+
 router.post("/", async (req, res) => {
     const therapist = req.body;
     await Therapist.create(therapist)
     res.json(therapist);
 })
 
-router.post("/addNewPatient/:therapistId", async (req, res) => {
+router.post("/addNewPatient/:therapistId", validateToken, async (req, res) => {
     const { therapistId } = req.params;
     const patientData = req.body;
   
     try {
       const therapist = await Therapist.findByPk(therapistId);
-      const patient = await Patient.create(patientData)
       const numberOfPatients = await therapist.countPatients();
+
+      const patient = await Patient.create(patientData)
 
       therapist.addPatient(patient, {through: {subscriptionInWaitingList: numberOfPatients}});
   
