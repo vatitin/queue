@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {TherapistUser, Therapist, TherapistsCredential, Role} = require('../models');
+const {Therapist, Credential, Role} = require('../models');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
 const {createTokens} = require('../middlewares/AuthMiddleware')
@@ -14,14 +14,13 @@ router.post("/register", async (req, res) => {
         } else {
             try {
                 const therapist = await Therapist.create()
-                const credential = await TherapistsCredential.create({
+                const credential = await Credential.create({
                     email: email,
-                    password: hash
+                    password: hash,
                 })
-                await therapist.setTherapistsCredential(credential);
-
-                const role = await Role.findOne({where: {name: "therapist"}});
-                await role.addTherapist(therapist);
+                therapist.setCredential(credential);
+                const role = await Role.create({name: "Therapist"});
+                await therapist.addRole(role)
 
                 return res.status(201).json(therapist);
 
@@ -35,7 +34,7 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
     const {email, password} = req.body;
-    const user = await TherapistsCredential.findOne({where: {email: email}})
+    const user = await Credential.findOne({where: {email: email}})
 
     if (!user) return res.status(400).json({ error: 'Der Nutzer existiert nicht' });
 

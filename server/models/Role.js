@@ -15,8 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Role.associate = (models) => {
-        Role.hasMany(models.Therapist);
-        Role.hasMany(models.Patient);
+        Role.belongsToMany(models.Therapist, { through: 'TherapistRoles' });
     };
 
     return Role;

@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const {Therapist, PatientTherapist, Patient} = require('../models');
-const {validateToken} = require('../middlewares/AuthMiddleware')
+const {Therapist, Patient} = require('../models');
+const {validateToken, authTherapistId} = require('../middlewares/AuthMiddleware')
 
-router.get("/addNewPatient/:therapistId", async (req, res) => {
+router.get("/getPatients/:therapistId", validateToken, authTherapistId, async (req, res) => {
   try {
     const id = req.params.therapistId;
     const therapist = await Therapist.findByPk(id);
@@ -16,17 +16,7 @@ router.get("/addNewPatient/:therapistId", async (req, res) => {
   }
 })
 
-router.get("/myProfile", validateToken, async (req, res) =>  {
-  res.json("profile");
-})
-
-router.post("/", async (req, res) => {
-    const therapist = req.body;
-    await Therapist.create(therapist)
-    res.json(therapist);
-})
-
-router.post("/addNewPatient/:therapistId", validateToken, async (req, res) => {
+router.post("/addNewPatient/:therapistId", validateToken, authTherapistId, async (req, res) => {
     const { therapistId } = req.params;
     const patientData = req.body;
   

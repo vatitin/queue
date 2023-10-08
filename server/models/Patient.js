@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Patient.associate = (models) => {
         Patient.belongsToMany(models.Therapist, { through: models.PatientTherapist });
-        Patient.hasOne(models.PatientsCredential);
+        Patient.hasOne(models.Credential);
         Patient.belongsTo(models.Role);
     }
 

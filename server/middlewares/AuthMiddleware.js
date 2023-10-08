@@ -1,15 +1,25 @@
 const {sign, verify} = require('jsonwebtoken');
 //todo change secret value, when push to git, create an .env file
 const secret = "importantSecret";
+const {Credential, TherapistRoles} = require('../models');
 
-const authPage = (permissions) => {
-    return(req, res, next) => {
-        const userRole = req.body.role;
-    }
-}
-
-const authTherapist = (req, res, next) => {
-
+const authTherapistId = async (req, res, next) => {
+    const accessToken = req.cookies.accessToken;
+    const decodedToken = verify(accessToken, secret)
+    try {
+        const decodedId = decodedToken.id;
+        const therapistId = await Credential.findOne({ where: { TherapistId: decodedId } });
+        if (!therapistId) {
+          return res.status(400).json({ error: 'Therapeut existiert nicht!' });
+        }
+        if (therapistId.id !== parseInt(req.params.therapistId)) {
+          return res.status(401).json({ error: 'Benutzer hat keine Berechtigung!' });
+        }
+        next();
+      } catch (error) {
+        console.error('Error finding therapist:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
 }
 
 const createTokens = (user) => {
@@ -22,9 +32,10 @@ const validateToken = (req, res, next) => {
     if (!accessToken) return res.status(400).json({error: "Benutzer ist nicht eingeloggt!"})
 
     try {
-        const validToken = verify(accessToken, secret)
-        if (!validToken) return res.status(400).json({error: "Authentifizierung fehlgeschlagen!"})
+        const decodedToken = verify(accessToken, secret)
+        if (!decodedToken) return res.status(400).json({error: "Authentifizierung fehlgeschlagen!"})
         
+
         req.authenticated = true;
         return next();
     } catch(err) {
@@ -33,4 +44,4 @@ const validateToken = (req, res, next) => {
     }
 }
 
-module.exports = {createTokens, validateToken}
+module.exports = {createTokens, validateToken, authTherapistId}
