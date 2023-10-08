@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const {TherapistUser, Therapist} = require('../models');
+const {TherapistUser, Therapist, TherapistsCredential, Role} = require('../models');
 const bcrypt = require('bcrypt');
-const cookieParser = require('cookie-parser');
 const saltRounds = 12;
-const {sign} = require('jsonwebtoken');
 const {createTokens} = require('../middlewares/AuthMiddleware')
 //todo implement CSRF protenction and handle XSS attacks
  
@@ -15,15 +13,15 @@ router.post("/register", async (req, res) => {
             return res.status(400).json({error: err});
         } else {
             try {
-                const therapistUser = await TherapistUser.create({
+                const therapist = await Therapist.create()
+                const credential = await TherapistsCredential.create({
                     email: email,
                     password: hash
                 })
-                const therapist = await Therapist.create({
-                    TherapistUserId: therapistUser.id,
-                })
+                await therapist.setTherapistsCredential(credential);
 
-                await therapistUser.setTherapist(therapist);
+                const role = await Role.findOne({where: {name: "therapist"}});
+                await role.addTherapist(therapist);
 
                 return res.status(201).json(therapist);
 
@@ -37,7 +35,7 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
     const {email, password} = req.body;
-    const user = await TherapistUser.findOne({where: {email: email}})
+    const user = await TherapistsCredential.findOne({where: {email: email}})
 
     if (!user) return res.status(400).json({ error: 'Der Nutzer existiert nicht' });
 

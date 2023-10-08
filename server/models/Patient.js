@@ -7,14 +7,12 @@ module.exports = (sequelize, DataTypes) => {
         birthDate: DataTypes.DATE,
         gender: DataTypes.STRING,
         address: DataTypes.STRING,
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
     })
 
     Patient.associate = (models) => {
-      Patient.belongsToMany(models.Therapist, { through: models.PatientTherapist });
+        Patient.belongsToMany(models.Therapist, { through: models.PatientTherapist });
+        Patient.hasOne(models.PatientsCredential);
+        Patient.belongsTo(models.Role);
     }
 
     return Patient;    

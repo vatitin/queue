@@ -2,6 +2,16 @@ const {sign, verify} = require('jsonwebtoken');
 //todo change secret value, when push to git, create an .env file
 const secret = "importantSecret";
 
+const authPage = (permissions) => {
+    return(req, res, next) => {
+        const userRole = req.body.role;
+    }
+}
+
+const authTherapist = (req, res, next) => {
+
+}
+
 const createTokens = (user) => {
     const accessToken = sign({email: user.email, id: user.id}, secret);
     return accessToken;
