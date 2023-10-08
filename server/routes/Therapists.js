@@ -19,7 +19,6 @@ router.get("/getPatients/:therapistId", validateToken, authTherapistId, async (r
 router.post("/addNewPatient/:therapistId", validateToken, authTherapistId, async (req, res) => {
     const { therapistId } = req.params;
     const patientData = req.body;
-  
     try {
       const therapist = await Therapist.findByPk(therapistId);
       const numberOfPatients = await therapist.countPatients();

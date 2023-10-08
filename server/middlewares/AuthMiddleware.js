@@ -4,10 +4,8 @@ const secret = "importantSecret";
 const {Credential, TherapistRoles} = require('../models');
 
 const authTherapistId = async (req, res, next) => {
-    const accessToken = req.cookies.accessToken;
-    const decodedToken = verify(accessToken, secret)
-    try {
-        const decodedId = decodedToken.id;
+  try {
+        const decodedId = req.credentialId;
         const therapistId = await Credential.findOne({ where: { TherapistId: decodedId } });
         if (!therapistId) {
           return res.status(400).json({ error: 'Therapeut existiert nicht!' });
@@ -28,6 +26,7 @@ const createTokens = (user) => {
 }
 
 const validateToken = (req, res, next) => {
+  //todo check what happens if therapist and patient use the same email
     const accessToken = req.cookies.accessToken;
     if (!accessToken) return res.status(400).json({error: "Benutzer ist nicht eingeloggt!"})
 
@@ -35,7 +34,7 @@ const validateToken = (req, res, next) => {
         const decodedToken = verify(accessToken, secret)
         if (!decodedToken) return res.status(400).json({error: "Authentifizierung fehlgeschlagen!"})
         
-
+        req.credentialId = decodedToken.id;
         req.authenticated = true;
         return next();
     } catch(err) {

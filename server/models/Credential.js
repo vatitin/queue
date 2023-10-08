@@ -2,8 +2,14 @@
 module.exports = (sequelize, DataTypes) => {
 
     const Credential = sequelize.define('Credential', {
-        email: DataTypes.STRING,
-        password: DataTypes.STRING,
+        email: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        password: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
     })
 
     Credential.associate = (models) => {
