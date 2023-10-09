@@ -1,23 +1,20 @@
 //import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, } from "react-router-dom";
 import { Home } from "./pages/Home";
 import CreatePatient from "./pages/CreatePatient";
 import { Patient } from "./pages/Patient";
 import { Patients } from "./pages/Patients";
 import { LoginTherapist } from "./pages/LoginTherapist";
 import { RegisterTherapist } from "./pages/RegisterTherapist";
+import { Navbar } from "./pages/Navbar";
 
 function App() {
 
   return (
     <div className="App">
       <Router>
-        <div className="navbar">
-          <Link to="/">Home</Link>
-          <Link to="/loginTherapist">Login</Link>
-          <Link to="/registerTherapist">Register</Link>
-        </div>
+        <Navbar/>
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/loginTherapist" element={<LoginTherapist/>} />

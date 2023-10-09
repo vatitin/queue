@@ -25,6 +25,25 @@ const createTokens = (user) => {
     return accessToken;
 }
 
+//todo maybe in another file like helper
+const isLoggedIn = (req, res) => {
+  //todo check what happens if therapist and patient use the same email
+  const accessToken = req.cookies.accessToken;
+  if (!accessToken) return res.send({isLoggedIn: false});
+
+  try {
+      const decodedToken = verify(accessToken, secret)
+      if (!decodedToken) return res.send({isLoggedIn: false});
+      
+      req.credentialId = decodedToken.id;
+      req.authenticated = true;
+      return res.send({isLoggedIn: true});
+  } catch(err) {
+      console.error("Error validating token:", err);
+      return res.status(500).json({error: "Ein unerwarteter Fehler ist aufgetreten!"})
+  }
+}
+
 const validateToken = (req, res, next) => {
   //todo check what happens if therapist and patient use the same email
     const accessToken = req.cookies.accessToken;
@@ -43,4 +62,4 @@ const validateToken = (req, res, next) => {
     }
 }
 
-module.exports = {createTokens, validateToken, authTherapistId}
+module.exports = {createTokens, validateToken, authTherapistId, isLoggedIn}

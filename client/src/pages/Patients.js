@@ -6,8 +6,8 @@ import {useParams} from'react-router-dom';
 
 function Patients() {
   const [patients, setPatients] = useState([]);
-  let navigate = useNavigate();
-  let {therapistId} = useParams();
+  const navigate = useNavigate();
+  const {therapistId} = useParams();
 
   useEffect(() => {
     try {
