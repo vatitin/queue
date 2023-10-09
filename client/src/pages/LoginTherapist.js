@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import{ useState } from "react";
+import React from "react";
 import axios from "axios";
 
 function LoginTherapist() {
@@ -10,12 +11,20 @@ function LoginTherapist() {
       email: email,
       password: password,
     };
-    axios.post(`http://localhost:3001/therapistAuth/login`, data).then((response) => {
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+        },
+        withCredentials: true
+      }
+
+    axios.post(`http://localhost:3001/therapistAuth/login`, data, config).then((response) => {
         if (response.data.error) {
-            return alert(response.data.error);
+          return alert(response.data.error);
         } else {
-        //todo change to cookie functionality
-        sessionStorage.setItem("accessToken", response.data)
+          //todo remove
+          return alert("Login hat funktioniert.")
         }
     });
   };

@@ -32,6 +32,14 @@ router.post("/register", async (req, res) => {
     })
 });
 
+router.get("/login", async (req, res) => {
+    if (req.cookies.accessToken) {
+        return res.send({loggedIn: true, user: req.session.user})
+    } else {
+        res.send({loggedIn: false, user: null})
+    }
+})
+
 router.post("/login", async (req, res) => {
     const {email, password} = req.body;
     const user = await Credential.findOne({where: {email: email}})
@@ -43,7 +51,7 @@ router.post("/login", async (req, res) => {
 
         const accessToken = createTokens(user);
 
-        res.cookie('accessToken', accessToken, {maxAge: 900000, httpOnly: true});
+        res.cookie('accessToken', accessToken);
         //todo check if this is neccesary compared to above
         //res.cookie('accessToken', accessToken, {maxAge: 900000, httpOnly: true, secure: true});
 

@@ -2,10 +2,25 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    methods: ['GET', 'POST'],
+    credentials: true
+}));
 app.use(cookieParser());
+//todo remove if bodyParser is not used
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(session({
+    key: 'credentialId',
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {maxAge: 900000, httpOnly: true, }
+}))
 
 const db = require('./models')
 
