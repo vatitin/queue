@@ -5,6 +5,13 @@ import axios from 'axios';
 
 function RegisterTherapist() {
 
+    const config = {
+        headers: {
+          "Content-Type": "application/json"
+          },
+          withCredentials: true
+        }
+
     const initialValues = {
         email: '',
         password: '',
@@ -25,7 +32,7 @@ function RegisterTherapist() {
     });
 
     const onSubmit = (data) => {
-        axios.post(`http://localhost:3001/therapistAuth/register`, data).then(() => {
+        axios.post(`http://localhost:3001/therapistAuth/register`, data, config).then(() => {
             console.log(data);
         })
     }

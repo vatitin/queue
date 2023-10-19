@@ -13,6 +13,7 @@ app.use(cors({
 app.use(cookieParser());
 app.use(session({
     key: 'credentialId',
+    //todo use another secret
     secret: 'secret',
     resave: false,
     saveUninitialized: false,

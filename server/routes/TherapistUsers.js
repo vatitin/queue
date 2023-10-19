@@ -4,13 +4,13 @@ const {Therapist, Credential, Role} = require('../models');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
 const {createTokens} = require('../middlewares/AuthMiddleware')
-//todo implement CSRF protenction and handle XSS attacks
+//todo implement CSRF protenction and handle XSS attacks (look up if necessary with cookies as storage)
  
 router.post("/register", async (req, res) => {
     const {email, password, } = req.body;
     bcrypt.hash(password, saltRounds, async (err, hash) => {
         if (err) {
-            return res.status(400).json({error: err});
+            return res.status(400).json({error: "Benutzer konnte nicht registriert werden!"});
         } else {
             try {
                 const therapist = await Therapist.create()
@@ -36,7 +36,7 @@ router.get("/login", async (req, res) => {
     if (req.cookies.accessToken) {
         return res.send({loggedIn: true, user: req.session.user})
     } else {
-        res.send({loggedIn: false, user: null})
+        return res.send({loggedIn: false, user: null})
     }
 })
 
@@ -44,18 +44,19 @@ router.post("/login", async (req, res) => {
     const {email, password} = req.body;
     const user = await Credential.findOne({where: {email: email}})
 
-    if (!user) return res.status(400).json({ error: 'Der Nutzer existiert nicht' });
+    if (!user) return res.status(401).json({ error: 'Der Nutzer existiert nicht' });
 
     bcrypt.compare(password, user.password).then(match => {
-        if (!match) return res.status(400).json({ error: 'Nutzername oder Passwort ist falsch' });
+        if (!match) return res.status(401).json({ error: 'Nutzername oder Passwort ist falsch' });
 
         const accessToken = createTokens(user);
-
-        res.cookie('accessToken', accessToken);
+        res.cookie('accessToken', accessToken, {maxAge: 900000, httpOnly: true,});
         //todo check if this is neccesary compared to above
         //res.cookie('accessToken', accessToken, {maxAge: 900000, httpOnly: true, secure: true});
 
-        return res.status(200).json("authenticated");
+        const therapistId = user.TherapistId
+        responseObject = {therapistId};
+        return res.status(200).json(responseObject);
     })
 })
 

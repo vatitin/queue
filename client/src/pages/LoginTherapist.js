@@ -1,12 +1,15 @@
 import{ useState } from "react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function LoginTherapist() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const login = () => {
+  const login = async () => {
+
     const data = {
       email: email,
       password: password,
@@ -17,16 +20,24 @@ function LoginTherapist() {
         "Content-Type": "application/json"
         },
         withCredentials: true
-      }
+    }
 
-    axios.post(`http://localhost:3001/therapistAuth/login`, data, config).then((response) => {
-        if (response.data.error) {
-          return alert(response.data.error);
-        } else {
-          //todo remove
-          return alert("Login hat funktioniert.")
-        }
-    });
+    const instance = axios.create({
+      validateStatus: (status) => {
+        return status >= 200 && status < 500
+      },
+    })
+
+    try {
+      const response = await instance.post(`http://localhost:3001/therapistAuth/login`, data, config)
+      if (response.data.error) return alert("Login nicht erfolgreich")
+      navigate(`/patients/${response.data.therapistId}`,);
+      return console.log(response);
+    } catch (error) {
+      alert(`Ein Fehler ist aufgetreten: ${error}`)
+    }
+
+
   };
 
   return (
@@ -37,6 +48,7 @@ function LoginTherapist() {
           setEmail(event.target.value);
         }}
         placeholder="Email"
+        autoComplete="on"
       />
       <input
         type="password"
@@ -44,6 +56,7 @@ function LoginTherapist() {
           setPassword(event.target.value);
         }}
         placeholder="Passwort"
+        autoComplete="on"
       />
 
       <button onClick={login}>Login</button>
