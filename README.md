@@ -1,4 +1,15 @@
 # queue project wiki
+---
+## Table of Contents
+1. [Overview](#overview)
+2. [Project Structure](#project-structure)
+    - [Server](#server)
+    - [Client](#client)
+3. [Database](#database)
+4. [Unit or E2E Tests](#unit-or-e2e-tests)
+5. [Roadmap](#roadmap)
+    - [Functionality for Patients](#functionality-for-patients)
+    - [Functionality for Therapists](#functionality-for-therapists)
 
 ---
 ## Overview
