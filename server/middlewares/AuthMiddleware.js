@@ -1,7 +1,9 @@
 const {sign, verify} = require('jsonwebtoken');
-//todo change secret value, when push to git, create an .env file
-const secret = "importantSecret";
-const {Therapist, Credential} = require('../models');
+require('dotenv').config();
+const {Credential, TherapistRoles} = require('../models');
+
+const secretPassword = process.env.SECRET_PASSWORD;
+
 
 const authTherapistId = async (req, res, next) => {
   try {
@@ -18,7 +20,7 @@ const authTherapistId = async (req, res, next) => {
 }
 
 const createTokens = (user) => {
-    const accessToken = sign({email: user.email, id: user.id}, secret);
+    const accessToken = sign({email: user.email, id: user.id}, secretPassword);
     return accessToken;
 }
 
@@ -29,7 +31,7 @@ const isLoggedIn = async (req, res, next) => {
   if (!accessToken) return res.status(403).json({isLoggedIn: false, error: "Nutzer ist nicht eingeloggt"});
 
   try {
-      const decodedToken = verify(accessToken, secret)
+      const decodedToken = verify(accessToken, secretPassword)
       if (!decodedToken) return res.send({isLoggedIn: false});
       //todo is this necessary? Maybe remove
       req.credentialId = decodedToken.id;
@@ -53,7 +55,7 @@ const validateToken = (req, res, next) => {
     if (!accessToken) return res.status(400).json({error: "Benutzer ist nicht eingeloggt!"})
 
     try {
-        const decodedToken = verify(accessToken, secret)
+        const decodedToken = verify(accessToken, secretPassword)
         if (!decodedToken) return res.status(400).json({error: "Authentifizierung fehlgeschlagen!"})
         
         req.credentialId = decodedToken.id;
