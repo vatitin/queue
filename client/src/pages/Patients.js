@@ -9,16 +9,16 @@ function Patients() {
   const navigate = useNavigate();
   const {therapistId} = useParams();
 
-  const config = {
-    headers: {
-      "Content-Type": "application/json"
-      },
-      withCredentials: true
-    }
-
   useEffect(() => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+        },
+        withCredentials: true
+      }
+
     try {
-      axios.get(`http://localhost:3001/therapists/getPatients/${therapistId}`, config).then((response) => {
+      axios.get(`http://localhost:3001/therapists/myPatients`, config).then((response) => {
         setPatients(response.data);
       });
     } catch (error) {

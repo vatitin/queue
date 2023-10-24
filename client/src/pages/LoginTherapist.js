@@ -24,14 +24,14 @@ function LoginTherapist() {
 
     const instance = axios.create({
       validateStatus: (status) => {
-        return status >= 200 && status < 500
+        return status >= 200 && status <= 403
       },
     })
 
     try {
       const response = await instance.post(`http://localhost:3001/therapistAuth/login`, data, config)
-      if (response.data.error) return alert("Login nicht erfolgreich")
-      navigate(`/patients/${response.data.therapistId}`,);
+      if (response.data.error) return alert(response.data.error)
+      navigate(`/myPatients`,);
       return console.log(response);
     } catch (error) {
       alert(`Ein Fehler ist aufgetreten: ${error}`)
