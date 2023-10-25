@@ -57,9 +57,10 @@ const validateToken = (req, res, next) => {
   //todo check what happens if therapist and patient use the same email
     try {
         const accessToken = req.cookies.accessToken;
-        if (!accessToken) return res.status(400).json({error: "Benutzer ist nicht eingeloggt!"})
+        if (!accessToken) return res.status(401).json({error: "Benutzer ist nicht eingeloggt!"})
         const decodedToken = verify(accessToken, secretPassword)
-        if (!decodedToken) return res.status(400).json({error: "Authentifizierung fehlgeschlagen!"})
+        if (!decodedToken) return res.status(401
+          ).json({error: "Authentifizierung fehlgeschlagen!"})
         
         req.authenticated = true;
         next();
