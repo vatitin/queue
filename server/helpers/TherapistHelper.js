@@ -1,19 +1,18 @@
+const {verify} = require('jsonwebtoken');
+require('dotenv').config();
+const secretPassword = process.env.SECRET_PASSWORD;
 
-const getIdOfLoggedInUser = async (req, res) => {
-    const accessToken = req.cookies.accessToken;
-    if (!accessToken) return res.status(403).json({isLoggedIn: false, error: "Nutzer ist nicht eingeloggt"});
-  
+const getDecodedToken = (req) => {
     try {
-        const decodedToken = verify(accessToken, secret)
-        if (!decodedToken) return res.send({isLoggedIn: false});
-        //todo is this necessary? Maybe remove
-        req.credentialId = decodedToken.id;
-  
-        req.authenticated = true;
-        const therapistCredential = await Credential.findByPk(decodedToken.id)
-        const therapist = await Therapist.findByPk(therapistCredential.therapistId)
-        req.therapistId = therapist.id;
+        const accessToken = req.cookies.accessToken;
+        if (!accessToken) return null
+          
+        const decodedToken = verify(accessToken, secretPassword)
+        return decodedToken
     } catch (err) {
-        
+        console.log("error at decoding cookie token:" + err.message)        
+        throw new error("Ein unerwarteter Fehler ist aufgetreten!")
     }
 }
+
+module.exports = {getDecodedToken}
