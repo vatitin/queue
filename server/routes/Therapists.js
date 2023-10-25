@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const {Therapist, Patient} = require('../models');
-const {validateToken, authTherapistId, isLoggedIn} = require('../middlewares/AuthMiddleware')
+const {validateToken, authTherapistId, isLoggedIn, getIdOfLoggedInTherapist} = require('../middlewares/AuthMiddleware')
 
-router.get("/myPatients", validateToken, authTherapistId, isLoggedIn, async (req, res) => {
+router.get("/myPatients", validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
   try {
     const therapist = await Therapist.findByPk(req.therapistId);
     const patients = await therapist.getPatients();
     console.log("Patients of therapist with Id:" + req.therapistId)
-    res.json(patients);
+    //todo status 200 or 201?
+    return res.status(200).json(patients);
   }
   catch (error) {
     console.error('Error finding the Therapist or Patients of the Therapist:', error);
