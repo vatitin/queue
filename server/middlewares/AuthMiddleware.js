@@ -1,14 +1,13 @@
-const {sign, verify} = require('jsonwebtoken');
 require('dotenv').config();
-const {Credential, TherapistRoles} = require('../models');
+const {sign, verify} = require('jsonwebtoken');
+const {getDecodedToken} = require('../helpers/TherapistHelper');
+const {Credential, Therapist} = require('../models');
 
 const secretPassword = process.env.SECRET_PASSWORD;
-
 
 const authTherapistId = async (req, res, next) => {
   try {
     const therapist = await Therapist.findByPk(req.therapistId);
-
     if (!therapist) {
       return res.status(400).json({ error: 'Therapeut existiert nicht!' });
     }
@@ -24,24 +23,29 @@ const createTokens = (user) => {
     return accessToken;
 }
 
-//todo maybe in another file like helper
-const isLoggedIn = async (req, res, next) => {
-  //todo check what happens if therapist and patient use the same email
-  const accessToken = req.cookies.accessToken;
-  if (!accessToken) return res.status(403).json({isLoggedIn: false, error: "Nutzer ist nicht eingeloggt"});
-
+const getIdOfLoggedInTherapist = async (req, res, next) => {
   try {
-      const decodedToken = verify(accessToken, secretPassword)
-      if (!decodedToken) return res.send({isLoggedIn: false});
-      //todo is this necessary? Maybe remove
-      req.credentialId = decodedToken.id;
-
-      req.authenticated = true;
+      const decodedToken = getDecodedToken(req)
+      if (!decodedToken) return res.status(403).json({isLoggedIn: false, error: "Nutzer ist nicht eingeloggt"});
       const therapistCredential = await Credential.findByPk(decodedToken.id)
-      const therapist = await Therapist.findByPk(therapistCredential.therapistId)
-      req.therapistId = therapist.id;
-      res.send({isLoggedIn: true});
-      next;
+
+      next();
+  } catch (err) {
+      console.log("getIdOfLoggedInTherapist threw an error!", err)
+      return res.status(500).json({error: "Ein unerwarteter Fehler ist aufgetreten."});
+  }
+}
+
+const isLoggedIn = async (req, res, next) => {
+  try {
+      const decodedToken = getDecodedToken(req)
+      if (!decodedToken) return res.status(403).json({isLoggedIn: false, error: "Nutzer ist nicht eingeloggt"});
+      const therapistCredential = await Credential.findByPk(decodedToken.id);
+      if (!therapistCredential) return res.status(403).json({isLoggedIn: false, error: "Nutzer konnte nicht gefunden werden."});
+
+      req.therapistId = await therapistCredential.TherapistId;
+      res.isLoggedIn = true;
+      next();
 
   } catch(err) {
       console.error("Error validating token:", err);
@@ -51,20 +55,18 @@ const isLoggedIn = async (req, res, next) => {
 
 const validateToken = (req, res, next) => {
   //todo check what happens if therapist and patient use the same email
-    const accessToken = req.cookies.accessToken;
-    if (!accessToken) return res.status(400).json({error: "Benutzer ist nicht eingeloggt!"})
-
     try {
+        const accessToken = req.cookies.accessToken;
+        if (!accessToken) return res.status(400).json({error: "Benutzer ist nicht eingeloggt!"})
         const decodedToken = verify(accessToken, secretPassword)
         if (!decodedToken) return res.status(400).json({error: "Authentifizierung fehlgeschlagen!"})
         
-        req.credentialId = decodedToken.id;
         req.authenticated = true;
-        return next();
+        next();
     } catch(err) {
         console.error("Error validating token:", err);
         return res.status(500).json({error: "Ein unerwarteter Fehler ist aufgetreten!"})
     }
 }
 
-module.exports = {createTokens, validateToken, authTherapistId, isLoggedIn}
+module.exports = {createTokens, validateToken, authTherapistId, isLoggedIn, getIdOfLoggedInTherapist}
