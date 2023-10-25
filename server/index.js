@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
 
 app.use(express.json());
 app.use(cors({
@@ -11,14 +10,6 @@ app.use(cors({
     credentials: true
 }));
 app.use(cookieParser());
-app.use(session({
-    key: 'credentialId',
-    //todo use another secret
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {maxAge: 900000, httpOnly: true, }
-}))
 
 const db = require('./models')
 
