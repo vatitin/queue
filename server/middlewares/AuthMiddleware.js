@@ -52,7 +52,7 @@ const isLoggedIn = async (req, res, next) => {
       return res.status(500).json({error: "Ein unerwarteter Fehler ist aufgetreten!"})
   }
 }
-
+//todo check if that can be removed and isLoggedIn be used instead
 const validateToken = (req, res, next) => {
   //todo check what happens if therapist and patient use the same email
     try {

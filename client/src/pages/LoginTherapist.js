@@ -1,9 +1,12 @@
 import{ useState } from "react";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../helpers/AuthContext";
+import { React, useContext } from 'react';
+
 
 function LoginTherapist() {
+  const {setAuthState} = useContext(AuthContext)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -31,6 +34,7 @@ function LoginTherapist() {
     try {
       const response = await instance.post(`http://localhost:3001/therapistAuth/login`, data, config)
       if (response.data.error) return alert(response.data.error)
+      setAuthState(true)
       navigate(`/myPatients`,);
       return console.log(response);
     } catch (error) {

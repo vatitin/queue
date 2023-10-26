@@ -1,37 +1,17 @@
 // Navbar.js
 
-import React, { useState, useEffect } from 'react';
+import { React, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { AuthContext } from "../helpers/AuthContext"
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json"
-        },
-        withCredentials: true
-    }
-    axios.get('http://localhost:3001/therapistAuth/login', config)
-      .then(response => {
-        if (response.data.loggedIn) {
-          setIsLoggedIn(true);
-        } else {
-          setIsLoggedIn(false);
-        }
-      })
-      .catch(error => {
-        setIsLoggedIn(false);
-        console.error('Error checking login status:', error);
-      });
-  }, []);
+  const {authState} = useContext(AuthContext)
 
   return (
     <div className="navbar">
       <Link to="/">Home</Link>
-      {isLoggedIn ? (
+      {authState ? (
         <Link to="/myPatients">Patients</Link>
       ) : (
         <>
