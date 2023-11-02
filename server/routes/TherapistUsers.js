@@ -40,6 +40,12 @@ router.get("/login", isLoggedIn, async (req, res) => {
     }
 })
 
+router.get("/logout", async (req, res) => {
+    console.log("logout ---------------------------")
+    res.clearCookie("accessToken");
+    res.send({LoggedIn: false})
+})
+
 router.post("/login", async (req, res) => {
     const {email, password} = req.body;
     const user = await Credential.findOne({where: {email: email}})

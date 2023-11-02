@@ -23,10 +23,21 @@ function App() {
         },
         withCredentials: true
     }
-    axios.get('http://localhost:3001/therapistAuth/login', config)
+
+    const instance = axios.create({
+      validateStatus: (status) => {
+        return (status >= 200 && status < 300) || status === 401 || status === 403;
+      },
+    })
+
+    instance.get('http://localhost:3001/therapistAuth/login', config)
       .then(response => {
         if (response.data.loggedIn) {
           setAuthState(true);
+        } else if (response.status === 401) {
+          setAuthState(false);
+        } else if (response.status === 403) {
+          setAuthState(false);
         } else {
           setAuthState(false);
         }

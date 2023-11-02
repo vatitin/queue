@@ -13,6 +13,7 @@ function LoginTherapist() {
 
   const login = async () => {
 
+    //todo check if this is necessary
     const data = {
       email: email,
       password: password,
@@ -27,7 +28,7 @@ function LoginTherapist() {
 
     const instance = axios.create({
       validateStatus: (status) => {
-        return status >= 200 && status <= 403
+        return (status >= 200 && status < 300) || status === 401 || status === 403;
       },
     })
 
@@ -40,7 +41,6 @@ function LoginTherapist() {
     } catch (error) {
       alert(`Ein Fehler ist aufgetreten: ${error}`)
     }
-
 
   };
 
