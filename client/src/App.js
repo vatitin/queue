@@ -14,7 +14,11 @@ import axios from 'axios';
 
 function App() {
 
-  const [authState, setAuthState] = useState(false)
+  const [authState, setAuthState] = useState({
+    email: "",
+    id: 0,
+    status: false,
+  })
 
   useEffect(() => {
     const config = {
@@ -32,16 +36,16 @@ function App() {
 
     instance.get('http://localhost:3001/therapistAuth/login', config)
       .then(response => {
-        if (response.data.loggedIn) {
-          setAuthState(true);
-        } else if (response.status === 401) {
-          setAuthState(false);
-        } else if (response.status === 403) {
-          setAuthState(false);
-        } else {
-          setAuthState(false);
-          alert("Ein Fehler ist aufgetreten")
-        }
+        setAuthState(prevState => {
+          if (response.data.loggedIn) {
+            setAuthState({ ...prevState, status: true });
+          } else if (response.status === 401 || response.status === 403) {
+            setAuthState({ email: "", id: 0, status: false });
+          } else {
+            setAuthState({ email: "", id: 0, status: false });
+            alert("Ein Fehler ist aufgetreten")
+          }
+        })
       })
       .catch(error => {
         console.error('Error checking login status:', error);
