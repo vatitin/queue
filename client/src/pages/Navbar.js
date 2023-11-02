@@ -10,10 +10,11 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <Link to="/">Home</Link>
-      {authState ? (
+      {authState.status ? (
         <>
           <Link to="/myPatients">Patients</Link>
           <Logout />
+          <h1>{authState.email}</h1>
         </>
       ) : (
         <>

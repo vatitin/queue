@@ -35,7 +35,7 @@ function LoginTherapist() {
     try {
       const response = await instance.post(`http://localhost:3001/therapistAuth/login`, data, config)
       if (response.data.error) return alert(response.data.error)
-      setAuthState(true)
+      setAuthState( {email: response.data.email, id: response.data.id, status: true} )
       navigate(`/myPatients`,);
       return console.log(response);
     } catch (error) {

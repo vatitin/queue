@@ -59,10 +59,10 @@ router.post("/login", async (req, res) => {
         res.cookie('accessToken', accessToken, {maxAge: 900000, httpOnly: true,});
         //todo check if this is neccesary compared to above
         //res.cookie('accessToken', accessToken, {maxAge: 900000, httpOnly: true, secure: true});
-
-        const therapistId = user.TherapistId
-        responseObject = {therapistId};
-        return res.status(200).json(responseObject);
+        
+        const email = user.email
+        const id = user.TherapistId
+        return res.status(200).json({id, email});
     })
 })
 

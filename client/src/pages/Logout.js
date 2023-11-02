@@ -19,7 +19,7 @@ const Logout = () => {
     try {
       const response = await axios.get('http://localhost:3001/therapistAuth/logout', config);
       if (response.data.error) return alert(response.data.error)
-      setAuthState(false);
+      setAuthState({ email: "", id: 0, status: false });
       navigate("/")
     } catch (error) {
       console.error('Error logging out:', error);
