@@ -52,7 +52,7 @@ function LoginTherapist() {
           setEmail(event.target.value);
         }}
         placeholder="Email"
-        autoComplete="on"
+        autoComplete="email"
       />
       <input
         type="password"
@@ -60,7 +60,6 @@ function LoginTherapist() {
           setPassword(event.target.value);
         }}
         placeholder="Passwort"
-        autoComplete="on"
       />
 
       <button onClick={login}>Login</button>

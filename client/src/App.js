@@ -40,6 +40,7 @@ function App() {
           setAuthState(false);
         } else {
           setAuthState(false);
+          alert("Ein Fehler ist aufgetreten")
         }
       })
       .catch(error => {
