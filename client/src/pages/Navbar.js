@@ -5,8 +5,19 @@ import { AuthContext } from "../helpers/AuthContext";
 import Logout from "./Logout";
 
 const Navbar = () => {
-  const { authState } = useContext(AuthContext);
+  let { authState } = useContext(AuthContext);
+  console.log("rendering Navbar component");
 
+  //todo check if this can be done better
+  //handles race condition to not be rendered before authState is initialized
+  if (!authState) {
+    authState = {
+      email: "",
+      id: 0,
+      status: false,
+    }
+
+  }
   return (
     <div className="navbar">
       <Link to="/">Home</Link>

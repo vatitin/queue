@@ -21,6 +21,7 @@ function App() {
   })
 
   useEffect(() => {
+    console.log("Fetching user login status...");
     const config = {
         headers: {
         "Content-Type": "application/json"
@@ -36,12 +37,16 @@ function App() {
 
     instance.get('http://localhost:3001/therapistAuth/login', config)
       .then(response => {
+        console.log("Received response:", response);
         setAuthState(prevState => {
           if (response.data.loggedIn) {
+            console.log("User is logged in");
             setAuthState({ ...prevState, status: true });
           } else if (response.status === 401 || response.status === 403) {
+            console.log("User is not authorized");
             setAuthState({ email: "", id: 0, status: false });
           } else {
+            console.log("Error occurred");
             setAuthState({ email: "", id: 0, status: false });
             alert("Ein Fehler ist aufgetreten")
           }
