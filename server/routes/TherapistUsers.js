@@ -62,7 +62,8 @@ router.post("/login", async (req, res) => {
         
         const email = user.email
         const id = user.TherapistId
-        return res.status(200).json({id, email});
+        const status = true
+        return res.status(200).json({id, email, status});
     })
 })
 

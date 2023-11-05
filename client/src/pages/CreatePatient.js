@@ -3,12 +3,10 @@ import {Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import { useParams } from 'react-router-dom';
 
 
 function CreatePatient() {
 
-    let {therapistId} = useParams();
     const config = {
         headers: {
           "Content-Type": "application/json"
@@ -30,7 +28,7 @@ function CreatePatient() {
         .required('Bitte geben Sie eine E-Mail-Adresse ein')    });
 
     const onSubmit = (data) => {
-        axios.post(`http://localhost:3001/therapists/addNewPatient/${therapistId}`, data, config).then(res => {
+        axios.post(`http://localhost:3001/therapists/addNewPatient`, data, config).then(res => {
             navigate('/')
         })
     }

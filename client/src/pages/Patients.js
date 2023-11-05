@@ -29,7 +29,7 @@ function Patients() {
 
   return (
     <div>
-        <div className="patientEntry" onClick={() => {navigate(`/addNewPatient/${therapistId}`)}}>
+        <div className="patientEntry" onClick={() => {navigate(`/addNewPatient`)}}>
             <div>Patient hinzufügen</div>
         </div>
         <div className="patientEntryHeader">
@@ -45,6 +45,7 @@ function Patients() {
               <div>{value.lastName ? value.lastName : "-"}</div>
               <div>{value.firstName ? value.firstName : "-"}</div>
               <div>{value.email}</div>
+              <button>Entfernen</button>
             </div>
           );
       })}

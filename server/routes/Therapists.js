@@ -17,8 +17,18 @@ router.get("/myPatients", validateToken, isLoggedIn, authTherapistId, getIdOfLog
   }
 })
 
-router.post("/addNewPatient/:therapistId", validateToken, authTherapistId, async (req, res) => {
-    const { therapistId } = req.params;
+router.delete("/fromWaitingList/:patientId", validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
+    const patientId = req.params.patientId
+    const therapistId = req.therapistId
+
+    PatientTherapists.destroy({where: {
+        PatientId: patientId,
+        TherapistId: therapistId,
+    }})
+}) 
+
+router.post("/addNewPatient",  validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
+    const therapistId = req.therapistId;
     const patientData = req.body;
     try {
       const therapist = await Therapist.findByPk(therapistId);
