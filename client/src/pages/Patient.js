@@ -3,7 +3,7 @@ import {useParams} from'react-router-dom';
 import axios from 'axios';
 
 function Patient() {
-    let {id} = useParams();
+    const {id} = useParams();
     const [patientObject, setPatientObject] = useState([]);
 
     useEffect(() => {

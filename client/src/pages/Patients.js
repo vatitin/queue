@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {useParams} from'react-router-dom';
 
@@ -9,14 +9,16 @@ function Patients() {
   const navigate = useNavigate();
   const {therapistId} = useParams();
 
-  useEffect(() => {
-    const config = {
+  const config = useMemo(() => {
+    return {
       headers: {
         "Content-Type": "application/json"
         },
         withCredentials: true
-      }
+    }
+    }, []) 
 
+  useEffect(() => {
     try {
       axios.get(`http://localhost:3001/therapists/myPatients`, config).then((response) => {
         setPatients(response.data);
@@ -25,7 +27,16 @@ function Patients() {
       console.error(error);
     }
 
-  }, [therapistId]);
+  }, [therapistId, config]);
+
+  
+const removePatient = (id) => {
+  axios.delete(`http://localhost:3001/therapists/deletePatient/fromWaitingList/${id}`, config)
+  .then((response) => {
+    console.log(response.message)
+      navigate(`/myPatients`,);
+  })
+}
 
   return (
     <div>
@@ -37,7 +48,7 @@ function Patients() {
         <div>Last Name</div>
         <div>First Name</div>
         <div>Email</div>
-        </div>
+    </div>
       {patients.map((value, key) => {
           return (
             <div className="patientEntry" onClick={() => {navigate(`/patient/${value.id}`)}}>
@@ -45,7 +56,7 @@ function Patients() {
               <div>{value.lastName ? value.lastName : "-"}</div>
               <div>{value.firstName ? value.firstName : "-"}</div>
               <div>{value.email}</div>
-              <button>Entfernen</button>
+              <button onClick={() => removePatient(value.id)}>Entfernen</button>
             </div>
           );
       })}

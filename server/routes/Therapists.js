@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Therapist, Patient} = require('../models');
+const {Therapist, Patient, PatientTherapist} = require('../models');
 const {validateToken, authTherapistId, isLoggedIn, getIdOfLoggedInTherapist} = require('../middlewares/AuthMiddleware')
 
 router.get("/myPatients", validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
@@ -17,14 +17,17 @@ router.get("/myPatients", validateToken, isLoggedIn, authTherapistId, getIdOfLog
   }
 })
 
-router.delete("/fromWaitingList/:patientId", validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
+router.delete("/deletePatient/fromWaitingList/:patientId", validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
     const patientId = req.params.patientId
     const therapistId = req.therapistId
 
-    PatientTherapists.destroy({where: {
+    await PatientTherapist.destroy({where: {
         PatientId: patientId,
         TherapistId: therapistId,
     }})
+    await Patient.destroy({where: {id: patientId}})
+
+    res.status(204).json("DELETED PATIENT SUCCESSFULLY")
 }) 
 
 router.post("/addNewPatient",  validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {

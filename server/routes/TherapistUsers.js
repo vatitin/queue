@@ -34,14 +34,15 @@ router.post("/register", async (req, res) => {
 
 router.get("/login", isLoggedIn, async (req, res) => {
     if (req.cookies.accessToken) {
-        return res.send({loggedIn: true, user: req.cookies.user})
+        therapistCredential = await Credential.findByPk(req.therapistCredentialId)
+        //todo check if user in res is necessary
+        return res.send({loggedIn: true, email: therapistCredential.email, user: req.cookies.user})
     } else {
         return res.send({loggedIn: false, user: null})
     }
 })
 
 router.get("/logout", async (req, res) => {
-    console.log("logout ---------------------------")
     res.clearCookie("accessToken");
     res.send({LoggedIn: false})
 })

@@ -18,7 +18,7 @@ function App() {
     email: "",
     id: 0,
     status: false,
-  })
+  });
 
   useEffect(() => {
     console.log("Fetching user login status...");
@@ -36,31 +36,30 @@ function App() {
     })
 
     instance.get('http://localhost:3001/therapistAuth/login', config)
-      .then(response => {
-        console.log("Received response:", response);
-        setAuthState(prevState => {
-          if (response.data.loggedIn) {
-            console.log("User is logged in");
-            setAuthState({ ...prevState, status: true });
-          } else if (response.status === 401 || response.status === 403) {
-            console.log("User is not authorized");
-            setAuthState({ email: "", id: 0, status: false });
-          } else {
-            console.log("Error occurred");
-            setAuthState({ email: "", id: 0, status: false });
-            alert("Ein Fehler ist aufgetreten")
-          }
-        })
-      })
+    .then(response => {
+      console.log("Received response:", response);
+      if (response.data.loggedIn) {
+        console.log("User is logged in");
+        setAuthState({ email: response.data.email, id: response.data.id, status: true });
+      } else if (response.status === 401 || response.status === 403) {
+        console.log("User is not authorized");
+        setAuthState({ email: "", id: 0, status: false });
+      } else {
+        console.log("Error occurred");
+        setAuthState({ email: "", id: 0, status: false });
+        alert("Ein Fehler ist aufgetreten");
+      }
+    })  
       .catch(error => {
         console.error('Error checking login status:', error);
       });
-  }, []);
+  }, [setAuthState]);
 
   return (
     <div className="App">
       <AuthContext.Provider value={{authState, setAuthState}}>
         <Router>
+          {console.log("rendering Navbar in App component")}
           <Navbar/>
           <Routes>
             <Route path="/" element={<Home/>} />

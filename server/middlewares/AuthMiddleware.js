@@ -43,7 +43,7 @@ const isLoggedIn = async (req, res, next) => {
       const therapistCredential = await Credential.findByPk(decodedToken.id);
       if (!therapistCredential) return res.status(403).json({isLoggedIn: false, error: "Nutzer konnte nicht gefunden werden."});
 
-      req.therapistId = await therapistCredential.TherapistId;
+      req.therapistCredentialId = decodedToken.id
       res.isLoggedIn = true;
       next();
 
