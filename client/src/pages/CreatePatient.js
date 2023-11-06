@@ -29,7 +29,7 @@ function CreatePatient() {
 
     const onSubmit = (data) => {
         axios.post(`http://localhost:3001/therapists/addNewPatient`, data, config).then(res => {
-            navigate('/')
+            navigate('/myPatients')
         })
     }
 

@@ -10,12 +10,11 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <Link to="/">Home</Link>
-  {console.log("rendering Navbar")}
       {authState.status ? (
         <>
           <Link to="/myPatients">Patients</Link>
           <Logout />
-          <h1>{authState.email}</h1>
+          <Link>{authState.email}</Link>
         </>
       ) : (
         <>
