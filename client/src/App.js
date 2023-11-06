@@ -8,6 +8,7 @@ import { Patients } from "./pages/Patients";
 import { LoginTherapist } from "./pages/LoginTherapist";
 import { RegisterTherapist } from "./pages/RegisterTherapist";
 import { Navbar } from "./pages/Navbar";
+import { PageNotFound } from "./pages/PageNotFound";
 import { AuthContext } from "./helpers/AuthContext"
 import { useState, useEffect } from "react";
 import axios from 'axios';
@@ -55,6 +56,7 @@ function App() {
       });
   }, [setAuthState]);
 
+  //todo check if PageNottFound to use without navbar
   return (
     <div className="App">
       <AuthContext.Provider value={{authState, setAuthState}}>
@@ -68,6 +70,7 @@ function App() {
             <Route path="/addNewPatient" element={<CreatePatient/>} />
             <Route path="/patient/:id" element={<Patient/>} />
             <Route path="/myPatients" element={<Patients/>} />
+            <Route path="*" element={<PageNotFound/>} />
           </Routes>
         </Router>
       </AuthContext.Provider>
