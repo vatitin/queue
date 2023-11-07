@@ -5,7 +5,7 @@ import { AuthContext } from "../helpers/AuthContext";
 import Logout from "./Logout";
 
 const Navbar = () => {
-  let { authState } = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
 
   return (
     <div className="navbar">

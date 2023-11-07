@@ -61,7 +61,6 @@ function App() {
     <div className="App">
       <AuthContext.Provider value={{authState, setAuthState}}>
         <Router>
-          {console.log("rendering Navbar in App component")}
           <Navbar/>
           <Routes>
             <Route path="/" element={<Home/>} />

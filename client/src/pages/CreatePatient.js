@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import {Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate} from "react-router-dom";
+import { AuthContext } from "../helpers/AuthContext"
 
 function CreatePatient() {
+    const navigate = useNavigate();
+    const { authState } = useContext(AuthContext);
 
     const config = {
         headers: {
@@ -33,7 +35,11 @@ function CreatePatient() {
         })
     }
 
-    let navigate = useNavigate();
+    useEffect(() => {
+        if (!authState.status) {
+          return navigate("/loginTherapist")
+        }
+    }, [authState.status, navigate]);
 
     return (
         <div className="CreatePatientPage">

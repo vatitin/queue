@@ -1,13 +1,14 @@
-import React from "react";
+import React, {useContext} from "react";
 import axios from "axios";
 import { useEffect, useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import {useParams} from'react-router-dom';
+import {useParams, useNavigate} from'react-router-dom';
+import { AuthContext } from "../helpers/AuthContext"
 
 function Patients() {
   const [patients, setPatients] = useState([]);
   const navigate = useNavigate();
   const {therapistId} = useParams();
+  const { authState } = useContext(AuthContext);
 
   const config = useMemo(() => {
     return {
@@ -19,6 +20,9 @@ function Patients() {
     }, []) 
 
   useEffect(() => {
+    if (!authState.status) {
+      return navigate("/loginTherapist")
+    }
     try {
       axios.get(`http://localhost:3001/therapists/myPatients`, config).then((response) => {
         setPatients(response.data);
@@ -27,7 +31,7 @@ function Patients() {
       console.error(error);
     }
 
-  }, [therapistId, config]);
+  }, [therapistId, config, authState.status, navigate]);
 
   
 const removePatient = (id) => {
