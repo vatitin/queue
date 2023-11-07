@@ -44,6 +44,7 @@ const isLoggedIn = async (req, res, next) => {
       if (!therapistCredential) return res.status(403).json({isLoggedIn: false, error: "Nutzer konnte nicht gefunden werden."});
 
       req.therapistCredentialId = decodedToken.id
+      req.therapistId = await therapistCredential.TherapistId
       res.isLoggedIn = true;
       next();
 
