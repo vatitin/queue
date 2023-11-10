@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Therapist, Patient, PatientTherapist, Credential} = require('../models');
+const {Therapist, Patient, PatientTherapist} = require('../models');
 const {validateToken, authTherapistId, isLoggedIn, getIdOfLoggedInTherapist} = require('../middlewares/AuthMiddleware')
 
 router.get("/myPatients", validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
