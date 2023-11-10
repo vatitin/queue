@@ -36,8 +36,7 @@ function LoginTherapist() {
       const response = await instance.post(`http://localhost:3001/therapistAuth/login`, data, config)
       if (response.data.error) return alert(response.data.error)
       setAuthState( {email: response.data.email, id: response.data.id, status: true} )
-      navigate(`/myPatients`,);
-      return console.log(response);
+      return navigate(`/myPatients`,);
     } catch (error) {
       alert(`Ein Fehler ist aufgetreten: ${error}`)
     }

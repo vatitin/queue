@@ -1,9 +1,12 @@
 import { React } from "react";
+import { useNavigate } from "react-router-dom"
 import {Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 
 function RegisterTherapist() {
+
+    const navigate = useNavigate();
 
     const config = {
         headers: {
@@ -37,7 +40,7 @@ function RegisterTherapist() {
 
     const onSubmit = (data) => {
         axios.post(`http://localhost:3001/therapistAuth/register`, data, config).then(() => {
-            console.log(data);
+            return navigate('/loginTherapist')
         })
     }
     
