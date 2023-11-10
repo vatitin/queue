@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Therapist, Credential, Role} = require('../models');
+const {Therapist, Credential} = require('../models');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
 const {createTokens, isLoggedIn} = require('../middlewares/AuthMiddleware')
@@ -24,8 +24,6 @@ router.post("/register", async (req, res) => {
                     password: hash,
                 })
                 therapist.setCredential(credential);
-                const role = await Role.create({name: "Therapist"});
-                await therapist.addRole(role)
 
                 return res.status(201).json(therapist);
 
