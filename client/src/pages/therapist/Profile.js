@@ -2,7 +2,7 @@ import React, {useContext} from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {useParams, useNavigate} from'react-router-dom';
-import { AuthContext } from "../helpers/AuthContext"
+import { AuthContext } from "../../helpers/AuthContext"
 
 function Profile() {
     

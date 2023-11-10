@@ -2,13 +2,13 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, } from "react-router-dom";
 import { Home } from "./pages/Home";
-import CreatePatient from "./pages/CreatePatient";
-import { Patient } from "./pages/Patient";
-import { Patients } from "./pages/Patients";
-import { LoginTherapist } from "./pages/LoginTherapist";
-import { RegisterTherapist } from "./pages/RegisterTherapist";
+import CreatePatient from "./pages/therapist/CreatePatient";
+import { Patient } from "./pages/therapist/Patient";
+import { Patients } from "./pages/therapist/Patients";
+import { LoginTherapist } from "./pages/therapist/LoginTherapist";
+import { RegisterTherapist } from "./pages/therapist/RegisterTherapist";
 import { Navbar } from "./pages/Navbar";
-import { Profile } from './pages/Profile'
+import { Profile } from './pages/therapist/Profile'
 import { PageNotFound } from "./pages/PageNotFound";
 import { AuthContext } from "./helpers/AuthContext"
 import { useState, useEffect } from "react";

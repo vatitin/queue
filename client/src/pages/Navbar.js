@@ -2,7 +2,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from "../helpers/AuthContext";
-import Logout from "./Logout";
+import Logout from "./therapist/Logout";
 
 const Navbar = () => {
   const { authState } = useContext(AuthContext);

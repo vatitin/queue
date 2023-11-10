@@ -1,6 +1,6 @@
 // Logout.js
 import React, { useContext } from 'react';
-import { AuthContext } from "../helpers/AuthContext";
+import { AuthContext } from "../../helpers/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
