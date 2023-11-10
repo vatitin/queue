@@ -22,7 +22,7 @@ function Profile() {
         return navigate("/loginTherapist")
       }
       try {
-        axios.get(`http://localhost:3001/therapists/myProfile`, config).then((response) => {
+        axios.get(`http://localhost:3001/therapist/myProfile`, config).then((response) => {
           setTherapist(response.data);
         });
       } catch (error) {

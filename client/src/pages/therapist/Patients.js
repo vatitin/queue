@@ -24,7 +24,7 @@ function Patients() {
       return navigate("/loginTherapist")
     }
     try {
-      axios.get(`http://localhost:3001/therapists/myPatients`, config).then((response) => {
+      axios.get(`http://localhost:3001/therapist/waitingList/myPatients`, config).then((response) => {
         setPatients(response.data);
       });
     } catch (error) {
@@ -35,7 +35,7 @@ function Patients() {
 
   
 const removePatient = (id) => {
-  axios.delete(`http://localhost:3001/therapists/deletePatient/fromWaitingList/${id}`, config)
+  axios.delete(`http://localhost:3001/therapist/waitingList/deletePatient/${id}`, config)
   .then((response) => {
     console.log(response.message)
       navigate(`/myPatients`,);

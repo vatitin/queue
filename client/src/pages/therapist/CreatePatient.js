@@ -30,7 +30,7 @@ function CreatePatient() {
         .required('Bitte geben Sie eine E-Mail-Adresse ein')    });
 
     const onSubmit = (data) => {
-        axios.post(`http://localhost:3001/therapists/addNewPatient`, data, config).then(res => {
+        axios.post(`http://localhost:3001/therapist/waitingList/addNewPatient`, data, config).then(res => {
             navigate('/myPatients')
         })
     }

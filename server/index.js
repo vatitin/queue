@@ -18,7 +18,10 @@ const patientsRouter = require('./routes/Patients')
 app.use('/patients', patientsRouter)
 
 const therapistsRouter = require('./routes/Therapists')
-app.use('/therapists', therapistsRouter)
+app.use('/therapist', therapistsRouter)
+
+const therapistWaitingListRouter = require('./routes/WaitingList')
+app.use('/therapist/waitingList', therapistWaitingListRouter)
 
 const therapistUserRouter = require('./routes/TherapistUsers')
 app.use('/therapistAuth', therapistUserRouter)
