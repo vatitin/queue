@@ -21,15 +21,14 @@ router.get("/myProfile", validateToken, isLoggedIn, authTherapistId, getIdOfLogg
   try {
     const therapistCredential = await Credential.findByPk(req.therapistCredentialId);
     const therapist = await Therapist.findByPk(therapistCredential.TherapistId)
-
     const response = {
       email: therapistCredential.email, 
       firstName: therapist.firstName, 
-      lastsName:therapist.lastName, 
+      lastName:therapist.lastName, 
       gender: therapist.gender, 
       address: therapist.address, 
     }
-    
+
     return res.status(200).json(response);
   }
   catch (error) {

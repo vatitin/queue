@@ -15,6 +15,10 @@ function RegisterTherapist() {
     const initialValues = {
         email: '',
         password: '',
+        firstName: "",
+        lastName: "",
+        gender: "",
+        address: "",
     }
 
     const validationSchema = Yup.object().shape({

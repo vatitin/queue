@@ -30,7 +30,6 @@ function Profile() {
       }
   
     }, [therapistId, authState.status, navigate]);
-  
 
     return (
         <div>

@@ -7,15 +7,20 @@ const {createTokens, isLoggedIn} = require('../middlewares/AuthMiddleware')
 //todo implement CSRF protenction and handle XSS attacks (look up if necessary with cookies as storage)
  
 router.post("/register", async (req, res) => {
-    const {email, password, } = req.body;
+    const {email, password, firstName, lastName, gender, address} = req.body;
     bcrypt.hash(password, saltRounds, async (err, hash) => {
         if (err) {
             return res.status(400).json({error: "Benutzer konnte nicht registriert werden!"});
         } else {
             try {
-                const therapist = await Therapist.create()
+                console.log("---------------------------" + firstName)
+                const therapist = await Therapist.create({                    
+                    firstName,
+                    lastName,
+                    gender,
+                    address})
                 const credential = await Credential.create({
-                    email: email,
+                    email,
                     password: hash,
                 })
                 therapist.setCredential(credential);
