@@ -14,7 +14,7 @@ const Navbar = () => {
         <>
           <Link to="/myPatients">Patients</Link>
           <Logout />
-          <Link>{authState.email}</Link>
+          <Link to="/myProfile">{authState.email}</Link>
         </>
       ) : (
         <>

@@ -8,6 +8,7 @@ import { Patients } from "./pages/Patients";
 import { LoginTherapist } from "./pages/LoginTherapist";
 import { RegisterTherapist } from "./pages/RegisterTherapist";
 import { Navbar } from "./pages/Navbar";
+import { Profile } from './pages/Profile'
 import { PageNotFound } from "./pages/PageNotFound";
 import { AuthContext } from "./helpers/AuthContext"
 import { useState, useEffect } from "react";
@@ -69,6 +70,7 @@ function App() {
             <Route path="/addNewPatient" element={<CreatePatient/>} />
             <Route path="/patient/:id" element={<Patient/>} />
             <Route path="/myPatients" element={<Patients/>} />
+            <Route path="/myProfile" element={<Profile/>} />
             <Route path="*" element={<PageNotFound/>} />
           </Routes>
         </Router>

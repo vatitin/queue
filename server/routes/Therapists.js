@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Therapist, Patient, PatientTherapist} = require('../models');
+const {Therapist, Patient, PatientTherapist, Credential} = require('../models');
 const {validateToken, authTherapistId, isLoggedIn, getIdOfLoggedInTherapist} = require('../middlewares/AuthMiddleware')
 
 router.get("/myPatients", validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
@@ -10,6 +10,27 @@ router.get("/myPatients", validateToken, isLoggedIn, authTherapistId, getIdOfLog
     console.log("Patients of therapist with Id:" + req.therapistId)
     //todo status 200 or 201?
     return res.status(200).json(patients);
+  }
+  catch (error) {
+    console.error('Error finding the Therapist or Patients of the Therapist:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+})
+
+router.get("/myProfile", validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
+  try {
+    const therapistCredential = await Credential.findByPk(req.therapistCredentialId);
+    const therapist = await Therapist.findByPk(therapistCredential.TherapistId)
+
+    const response = {
+      email: therapistCredential.email, 
+      firstName: therapist.firstName, 
+      lastsName:therapist.lastName, 
+      gender: therapist.gender, 
+      address: therapist.address, 
+    }
+    
+    return res.status(200).json(response);
   }
   catch (error) {
     console.error('Error finding the Therapist or Patients of the Therapist:', error);
