@@ -13,7 +13,16 @@ router.post("/register", async (req, res) => {
             return res.status(400).json({error: "Benutzer konnte nicht registriert werden!"});
         } else {
             try {
-                console.log("---------------------------" + firstName)
+                const existsCredential = await Credential.findOne({
+                    where: {
+                    email: req.body.email,
+                    }
+                })
+                if (existsCredential) return res.status(409).json({ 
+                    error: 'Email already registered', 
+                    message: 'The email address provided is already associated with an existing account.' 
+                });
+                
                 const therapist = await Therapist.create({                    
                     firstName,
                     lastName,

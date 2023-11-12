@@ -38,9 +38,16 @@ function RegisterTherapist() {
         })
     });
 
+    const instance = axios.create({
+        validateStatus: (status) => {
+          return (status >= 200 && status < 300) || status === 409;
+        },
+      })
+
     const onSubmit = (data) => {
-        axios.post(`http://localhost:3001/therapistAuth/register`, data, config).then(() => {
-            return navigate('/loginTherapist')
+        instance.post(`http://localhost:3001/therapistAuth/register`, data, config).then(response => {
+            if (response.status === 201) return navigate('/loginTherapist')
+            if (response.status === 409) return alert("Email existiert bereis")
         })
     }
     
