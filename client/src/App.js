@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Routes, Route, } from "react-router-dom";
 import { Home } from "./pages/Home";
 import CreatePatient from "./pages/therapist/CreatePatient";
 import { Patient } from "./pages/therapist/Patient";
-import { Patients } from "./pages/therapist/Patients";
-import { LoginTherapist } from "./pages/therapist/LoginTherapist";
-import { RegisterTherapist } from "./pages/therapist/RegisterTherapist";
+import { WaitingList } from "./pages/therapist/WaitingList";
+import { LoginTherapist } from "./pages/therapist/auth/LoginTherapist";
+import { RegisterTherapist } from "./pages/therapist/auth/RegisterTherapist";
 import { Navbar } from "./pages/Navbar";
 import { Profile } from './pages/therapist/Profile'
 import { PageNotFound } from "./pages/PageNotFound";
@@ -69,7 +69,7 @@ function App() {
             <Route path="/registerTherapist" element={<RegisterTherapist/>} />
             <Route path="/addNewPatient" element={<CreatePatient/>} />
             <Route path="/patient/:id" element={<Patient/>} />
-            <Route path="/myPatients" element={<Patients/>} />
+            <Route path="/waitingList" element={<WaitingList/>} />
             <Route path="/myProfile" element={<Profile/>} />
             <Route path="*" element={<PageNotFound/>} />
           </Routes>

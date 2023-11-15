@@ -2,7 +2,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from "../helpers/AuthContext";
-import Logout from "./therapist/Logout";
+import Logout from "./therapist/auth/Logout";
 
 const Navbar = () => {
   const { authState } = useContext(AuthContext);
@@ -12,7 +12,7 @@ const Navbar = () => {
       <Link to="/">Home</Link>
       {authState.status ? (
         <>
-          <Link to="/myPatients">Patients</Link>
+          <Link to="/waitingList">Warteliste</Link>
           <Logout />
           <Link to="/myProfile">{authState.email}</Link>
         </>

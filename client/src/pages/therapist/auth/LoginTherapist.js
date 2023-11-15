@@ -1,7 +1,7 @@
 import{ useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AuthContext } from "../../helpers/AuthContext";
+import { AuthContext } from "../../../helpers/AuthContext";
 import { React, useContext } from 'react';
 
 
@@ -36,7 +36,7 @@ function LoginTherapist() {
       const response = await instance.post(`http://localhost:3001/therapistAuth/login`, data, config)
       if (response.data.error) return alert(response.data.error)
       setAuthState( {email: response.data.email, id: response.data.id, status: true} )
-      return navigate(`/myPatients`,);
+      return navigate(`/waitingList`,);
     } catch (error) {
       alert(`Ein Fehler ist aufgetreten: ${error}`)
     }

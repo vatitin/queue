@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from "react";
 import {useParams, useNavigate} from'react-router-dom';
 import { AuthContext } from "../../helpers/AuthContext"
 
-function Patients() {
+function WaitingList() {
   const [patients, setPatients] = useState([]);
   const navigate = useNavigate();
   const {therapistId} = useParams();
@@ -38,7 +38,7 @@ const removePatient = (id) => {
   axios.delete(`http://localhost:3001/therapist/waitingList/deletePatient/${id}`, config)
   .then((response) => {
     console.log(response.message)
-      navigate(`/myPatients`,);
+      navigate(`/waitingList`,);
   })
 }
 
@@ -68,4 +68,4 @@ const removePatient = (id) => {
   );
 }
 
-export { Patients };
+export { WaitingList };
