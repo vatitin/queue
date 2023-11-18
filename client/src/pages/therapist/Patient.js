@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from'react-router-dom';
+import { patientById } from "../../endpoints"
 import axios from 'axios';
 
 function Patient() {
@@ -7,10 +8,10 @@ function Patient() {
     const [patientObject, setPatientObject] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/patients/byId/${id}`)
-        .then((response) => {
-            setPatientObject(response.data);
-        })
+        const response = async () => {
+            return await axios.get(patientById(id))
+        }
+        setPatientObject(response.data);
     }, [id]);
 
     return (

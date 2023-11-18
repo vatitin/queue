@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import {useParams, useNavigate} from'react-router-dom';
 import { AuthContext } from "../../helpers/AuthContext"
+import { therapistProfile } from "../../endpoints"
 
 function Profile() {
     
@@ -12,17 +13,17 @@ function Profile() {
     const [therapist, setTherapist] = useState([]);
   
     useEffect(() => {
-        const config = {
-            headers: {
-                "Content-Type": "application/json"
-                },
-                withCredentials: true
-        }
+      const config = {
+          headers: {
+              "Content-Type": "application/json"
+              },
+              withCredentials: true
+      }
       if (!authState.status) {
         return navigate("/loginTherapist")
       }
       try {
-        axios.get(`http://localhost:3001/therapist/myProfile`, config).then((response) => {
+        axios.get(therapistProfile, config).then((response) => {
           setTherapist(response.data);
         });
       } catch (error) {

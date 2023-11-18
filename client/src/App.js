@@ -12,6 +12,7 @@ import { Profile } from './pages/therapist/Profile'
 import { PageNotFound } from "./pages/PageNotFound";
 import { AuthContext } from "./helpers/AuthContext"
 import { useState, useEffect } from "react";
+import {loginTherapist} from "./endpoints"
 import axios from 'axios';
 
 function App() {
@@ -37,7 +38,7 @@ function App() {
       },
     })
 
-    instance.get('http://localhost:3001/therapistAuth/login', config)
+    instance.get(loginTherapist, config)
     .then(response => {
       console.log("Received response:", response);
       if (response.data.loggedIn) {

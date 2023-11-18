@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../helpers/AuthContext"
+import { addPatientWithStatus } from "../../endpoints"
 
 function CreatePatient() {
     const {patientStatus} = useParams();
@@ -31,7 +32,7 @@ function CreatePatient() {
         .required('Bitte geben Sie eine E-Mail-Adresse ein')    });
 
     const onSubmit = async (data) => {
-        await axios.post(`http://localhost:3001/therapist/patients/addNewPatient/${patientStatus}`, data, config)
+        await axios.post(addPatientWithStatus(patientStatus), data, config)
         navigate(`/myPatients/${patientStatus}`)
     }
 

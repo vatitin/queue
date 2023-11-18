@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useParams } from'react-router-dom';
 import { AuthContext } from "../../helpers/AuthContext"
+import { patientsWithStatus, deletePatientWithId } from "../../endpoints"
 
 function MyPatients() {
   const {patientStatus} = useParams();
@@ -24,7 +25,7 @@ function MyPatients() {
       return navigate("/loginTherapist")
     }
     try {
-      axios.get(`http://localhost:3001/therapist/patients/${patientStatus}`, config).then((response) => {
+      axios.get(patientsWithStatus(patientStatus), config).then((response) => {
         setPatients(response.data);
       });
     } catch (error) {
@@ -35,7 +36,7 @@ function MyPatients() {
 
   
   const removePatient = async (id) => {
-    const result = await axios.delete(`http://localhost:3001/therapist/patients/deletePatient/${id}`, config)
+    const result = await axios.delete(deletePatientWithId(id), config)
     if (result.status === 204) {
       setPatients((prevPatients) => prevPatients.filter((patient) => patient.id !== id));
     }

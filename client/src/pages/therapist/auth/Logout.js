@@ -2,6 +2,7 @@
 import React, { useContext } from 'react';
 import { AuthContext } from "../../../helpers/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { logoutTherapist } from "../../../endpoints"
 import axios from 'axios';
 
 const Logout = () => {
@@ -17,7 +18,7 @@ const Logout = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/therapistAuth/logout', config);
+      const response = await axios.get(logoutTherapist, config);
       if (response.data.error) return alert(response.data.error)
       setAuthState({ email: "", id: 0, status: false });
       navigate("/")

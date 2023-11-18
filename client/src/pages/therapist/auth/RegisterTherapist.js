@@ -1,5 +1,6 @@
 import { React } from "react";
 import { useNavigate } from "react-router-dom"
+import { registerTherapist } from "../../../endpoints"
 import {Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -45,7 +46,7 @@ function RegisterTherapist() {
       })
 
     const onSubmit = (data) => {
-        instance.post(`http://localhost:3001/therapistAuth/register`, data, config).then(response => {
+        instance.post(registerTherapist, data, config).then(response => {
             if (response.status === 201) return navigate('/loginTherapist')
             if (response.status === 409) return alert("Email existiert bereis")
         })
