@@ -14,14 +14,11 @@ app.use(cookieParser());
 const db = require('./models')
 
 //Routers
-const patientsRouter = require('./routes/Patients')
-app.use('/patients', patientsRouter)
-
 const therapistsRouter = require('./routes/Therapists')
 app.use('/therapist', therapistsRouter)
 
-const therapistWaitingListRouter = require('./routes/WaitingList')
-app.use('/therapist/waitingList', therapistWaitingListRouter)
+const therapistWaitingPatientsRouter = require('./routes/Patients')
+app.use('/therapist/patients', therapistWaitingPatientsRouter)
 
 const therapistUserRouter = require('./routes/TherapistUsers')
 app.use('/therapistAuth', therapistUserRouter)

@@ -2,10 +2,11 @@ import React, { useEffect, useContext } from 'react';
 import {Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import { useNavigate} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../helpers/AuthContext"
 
 function CreatePatient() {
+    const {patientStatus} = useParams();
     const navigate = useNavigate();
     const { authState } = useContext(AuthContext);
 
@@ -29,10 +30,9 @@ function CreatePatient() {
         .email('Bitte geben Sie eine gültige E-Mail-Adresse ein')
         .required('Bitte geben Sie eine E-Mail-Adresse ein')    });
 
-    const onSubmit = (data) => {
-        axios.post(`http://localhost:3001/therapist/waitingList/addNewPatient`, data, config).then(res => {
-            navigate('/waitingList')
-        })
+    const onSubmit = async (data) => {
+        await axios.post(`http://localhost:3001/therapist/patients/addNewPatient/${patientStatus}`, data, config)
+        navigate(`/myPatients/${patientStatus}`)
     }
 
     useEffect(() => {

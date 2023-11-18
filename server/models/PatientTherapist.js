@@ -4,7 +4,15 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
+        status: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          validate: {
+            isIn: [['WAITING', 'ACTIVE', 'FORMER']],
+          },
+        },
       });
+      
       
     return PatientTherapist;
   };

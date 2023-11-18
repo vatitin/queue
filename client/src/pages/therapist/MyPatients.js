@@ -1,13 +1,13 @@
 import React, {useContext} from "react";
 import axios from "axios";
 import { useEffect, useState, useMemo } from "react";
-import {useParams, useNavigate} from'react-router-dom';
+import { useNavigate, useParams } from'react-router-dom';
 import { AuthContext } from "../../helpers/AuthContext"
 
-function WaitingList() {
+function MyPatients() {
+  const {patientStatus} = useParams();
   const [patients, setPatients] = useState([]);
   const navigate = useNavigate();
-  const {therapistId} = useParams();
   const { authState } = useContext(AuthContext);
 
   const config = useMemo(() => {
@@ -24,27 +24,27 @@ function WaitingList() {
       return navigate("/loginTherapist")
     }
     try {
-      axios.get(`http://localhost:3001/therapist/waitingList/myPatients`, config).then((response) => {
+      axios.get(`http://localhost:3001/therapist/patients/${patientStatus}`, config).then((response) => {
         setPatients(response.data);
       });
     } catch (error) {
       console.error(error);
     }
 
-  }, [therapistId, config, authState.status, navigate]);
+  }, [config, authState.status, navigate, patientStatus]);
 
   
-const removePatient = (id) => {
-  axios.delete(`http://localhost:3001/therapist/waitingList/deletePatient/${id}`, config)
-  .then((response) => {
-    console.log(response.message)
-      navigate(`/waitingList`,);
-  })
-}
+  const removePatient = async (id) => {
+    const result = await axios.delete(`http://localhost:3001/therapist/patients/deletePatient/${id}`, config)
+    if (result.status === 204) {
+      setPatients((prevPatients) => prevPatients.filter((patient) => patient.id !== id));
+    }
+  }
 
   return (
     <div>
-        <div className="patientEntry" onClick={() => {navigate(`/addNewPatient`)}}>
+        <h1>{patientStatus}</h1>
+        <div className="patientEntry" onClick={() => {navigate(`/addNewPatient/${patientStatus}`)}}>
             <div>Patient hinzufügen</div>
         </div>
         <div className="patientEntryHeader">
@@ -55,11 +55,13 @@ const removePatient = (id) => {
     </div>
       {patients.map((value, key) => {
           return (
-            <div className="patientEntry" onClick={() => {navigate(`/patient/${value.id}`)}}>
-              <div>{value.id}</div>
-              <div>{value.lastName ? value.lastName : "-"}</div>
-              <div>{value.firstName ? value.firstName : "-"}</div>
-              <div>{value.email}</div>
+            <div>
+              <div className="patientEntry" onClick={() => {navigate(`/patient/${value.id}`)}}>
+                <div>{value.id}</div>
+                <div>{value.lastName ? value.lastName : "-"}</div>
+                <div>{value.firstName ? value.firstName : "-"}</div>
+                <div>{value.email}</div>
+              </div>
               <button onClick={() => removePatient(value.id)}>Entfernen</button>
             </div>
           );
@@ -68,4 +70,4 @@ const removePatient = (id) => {
   );
 }
 
-export { WaitingList };
+export { MyPatients };

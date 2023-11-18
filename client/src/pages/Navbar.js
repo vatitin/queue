@@ -12,7 +12,8 @@ const Navbar = () => {
       <Link to="/">Home</Link>
       {authState.status ? (
         <>
-          <Link to="/waitingList">Warteliste</Link>
+          <Link to="/myPatients/WAITING">Warteliste</Link>
+          <Link to="/myPatients/ACTIVE">Patienten</Link>
           <Logout />
           <Link to="/myProfile">{authState.email}</Link>
         </>
