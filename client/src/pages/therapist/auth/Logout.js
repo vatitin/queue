@@ -1,5 +1,5 @@
 // Logout.js
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { AuthContext } from "../../../helpers/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { logoutTherapist } from "../../../endpoints"
@@ -27,9 +27,7 @@ const Logout = () => {
     }
   };
 
-  return (
-    <button onClick={handleLogout}>Logout</button>
-  );
+  return handleLogout
 };
 
-export default Logout;
+export {Logout};
