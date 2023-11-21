@@ -44,29 +44,31 @@ function MyPatients() {
 
   return (
     <div>
-        <h1>{patientStatus}</h1>
-        <div className="patientEntry" onClick={() => {navigate(`/addNewPatient/${patientStatus}`)}}>
-            <div>Patient hinzufügen</div>
-        </div>
-        <div className="patientEntryHeader">
-        <div>ID</div>
-        <div>Last Name</div>
-        <div>First Name</div>
-        <div>Email</div>
-    </div>
-      {patients.map((value, key) => {
-          return (
-            <div>
-              <div className="patientEntry" onClick={() => {navigate(`/patient/${value.id}`)}}>
-                <div>{value.id}</div>
-                <div>{value.lastName ? value.lastName : "-"}</div>
-                <div>{value.firstName ? value.firstName : "-"}</div>
-                <div>{value.email}</div>
-              </div>
-              <button onClick={() => removePatient(value.id)}>Entfernen</button>
-            </div>
-          );
-      })}
+      <h1>{patientStatus}</h1>
+      <div className="patientEntry" onClick={() => {navigate(`/addNewPatient/${patientStatus}`)}}>
+        <div>Patient hinzufügen</div>
+      </div>
+      <table className="patientTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {patients.map((value, key) => (
+            <tr key={key}>
+              <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.id}</td>
+              <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.lastName ? value.lastName : "-"}</td>
+              <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.firstName ? value.firstName : "-"}</td>
+              <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.email}</td>
+              <td><button onClick={() => removePatient(value.id)}>Entfernen</button></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
