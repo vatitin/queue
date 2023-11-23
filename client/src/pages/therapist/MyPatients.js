@@ -36,7 +36,6 @@ function MyPatients() {
 
   }, [config, authState.status, navigate, patientStatus]);
 
-  
   const removePatient = async (id) => {
     const result = await axios.delete(deletePatientWithId(id), config)
     if (result.status === 204) {
@@ -54,12 +53,12 @@ function MyPatients() {
 
   return (
     <div className="container">
-      <h1 className="text-center">{headLine()}</h1>
+      <h1 className="text-center mb-5 mt-3">{headLine()}</h1>
       <table className="table table-striped table-hover">
         <thead className="table-light">
           <tr>
-            <th scope="col">Last Name</th>
-            <th scope="col">First Name</th>
+            <th scope="col">Nachname</th>
+            <th scope="col">Vorname</th>
             <th scope="col">Email</th>
             <th scope="col">Geschlecht</th>
             <th></th>
