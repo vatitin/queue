@@ -23,6 +23,8 @@ function MyPatients() {
   useEffect(() => {
     if (!authState.status) {
       return navigate("/loginTherapist")
+    } else if (patientStatus !== "WAITING" && patientStatus !== "ACTIVE") {
+      return navigate("*")
     }
     try {
       axios.get(patientsWithStatus(patientStatus), config).then((response) => {
@@ -42,33 +44,42 @@ function MyPatients() {
     }
   }
 
+  const headLine = () => {
+    if (patientStatus === "WAITING") {
+      return "Meine Warteliste"
+    } else {
+      return "Meine Patienten"
+    }
+  } 
+
   return (
-    <div>
-      <h1>{patientStatus}</h1>
-      <div className="patientEntry" onClick={() => {navigate(`/addNewPatient/${patientStatus}`)}}>
-        <div>Patient hinzufügen</div>
-      </div>
-      <table className="patientTable">
-        <thead>
+    <div className="container">
+      <h1 className="text-center">{headLine()}</h1>
+      <table className="table table-striped table-hover">
+        <thead className="table-light">
           <tr>
-            <th>ID</th>
-            <th>Last Name</th>
-            <th>First Name</th>
-            <th>Email</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Geschlecht</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          {patients.map((value, key) => (
-            <tr key={key}>
-              <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.id}</td>
+          {patients.map((value) => (
+            <tr>
               <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.lastName ? value.lastName : "-"}</td>
               <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.firstName ? value.firstName : "-"}</td>
               <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.email}</td>
-              <td><button onClick={() => removePatient(value.id)}>Entfernen</button></td>
+              <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.gender ? value.gender : "-"}</td>
+              <td><button type="button" class="btn btn-danger btn-sm" onClick={() => removePatient(value.id)}>Entfernen</button></td>
             </tr>
           ))}
         </tbody>
       </table>
+      <div class="d-grid gap-2 mb-3 col-6 mx-auto" onClick={() => {navigate(`/addNewPatient/${patientStatus}`)}}>
+        <button className="btn btn-primary btn-secondary" type="button" >Patient hinzufügen</button>
+      </div>
     </div>
   );
 }
