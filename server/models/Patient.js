@@ -5,12 +5,12 @@ module.exports = (sequelize, DataTypes) => {
         email: {
             type: DataTypes.STRING,
             allowNull: false,
-          },
+        },
+        phoneNumber: DataTypes.STRING,
         firstName: DataTypes.STRING,
         lastName: DataTypes.STRING,
         birthDate: DataTypes.DATE,
         gender: DataTypes.STRING,
-        address: DataTypes.STRING,
     })
 
     Patient.associate = (models) => {

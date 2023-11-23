@@ -60,6 +60,7 @@ function MyPatients() {
             <th scope="col">Nachname</th>
             <th scope="col">Vorname</th>
             <th scope="col">Email</th>
+            <th scope="col">Handynummer</th>
             <th scope="col">Geschlecht</th>
             <th></th>
           </tr>
@@ -70,6 +71,7 @@ function MyPatients() {
               <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.lastName ? value.lastName : "-"}</td>
               <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.firstName ? value.firstName : "-"}</td>
               <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.email}</td>
+              <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.phoneNumber ? value.phoneNumber : "-"}</td>
               <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.gender ? value.gender : "-"}</td>
               <td><button type="button" class="btn btn-danger btn-sm" onClick={() => removePatient(value.id)}>Entfernen</button></td>
             </tr>

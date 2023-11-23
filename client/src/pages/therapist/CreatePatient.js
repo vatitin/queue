@@ -63,6 +63,11 @@ function CreatePatient() {
         </div>
 
         <div className="mb-3">
+            <label htmlFor="phoneNumber">Handynummer</label>
+            <input className="form-control" id="phoneNumber" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange}/>
+        </div>
+
+        <div className="mb-3">
           <label className="d-block">Geschlecht:</label>
 
           <input type="radio" className="btn-check" id="genderM" name="gender" value="M" autoComplete="off" onChange={handleChange}/>

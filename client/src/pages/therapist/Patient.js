@@ -26,6 +26,7 @@ function Patient() {
             <div>{patientObject.lastName ? patientObject.lastName : "-"}</div>
             <div>{patientObject.firstName ? patientObject.firstName : "-"}</div>
             <div>{patientObject.email}</div>
+            <div>{patientObject.phoneNumber ? patientObject.phoneNumber : "-"}</div>
             <div>{patientObject.gender}</div>
         </div>
     );
