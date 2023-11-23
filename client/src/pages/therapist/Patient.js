@@ -8,18 +8,25 @@ function Patient() {
     const [patientObject, setPatientObject] = useState([]);
 
     useEffect(() => {
-        const response = async () => {
-            return await axios.get(patientById(id))
-        }
-        setPatientObject(response.data);
+        const config = {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+        };
+          
+        axios.get(patientById(id), config).then((response) => {
+            setPatientObject(response.data);
+        })
+
     }, [id]);
 
     return (
         <div>
-        <div>{patientObject.id}</div>
-        <div>{patientObject.lastName ? patientObject.lastName : "-"}</div>
-        <div>{patientObject.firstName ? patientObject.firstName : "-"}</div>
-        <div>{patientObject.email}</div>
+            <div>{patientObject.lastName ? patientObject.lastName : "-"}</div>
+            <div>{patientObject.firstName ? patientObject.firstName : "-"}</div>
+            <div>{patientObject.email}</div>
+            <div>{patientObject.gender}</div>
         </div>
     );
 }

@@ -4,6 +4,13 @@ const { getPatients } = require('../services/PatientService')
 const { Therapist, Patient, PatientTherapist } = require('../models');
 const { validateToken, authTherapistId, isLoggedIn, getIdOfLoggedInTherapist } = require('../middlewares/AuthMiddleware')
 
+router.get("/byId/:id", validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
+  const id = req.params.id
+  const patient = await Patient.findByPk(id)
+  console.log(patient.lastName)
+  res.json(patient)
+})
+
 router.get("/:status", validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
   const patientStatus = req.params.status
  
