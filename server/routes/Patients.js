@@ -7,7 +7,6 @@ const { validateToken, authTherapistId, isLoggedIn, getIdOfLoggedInTherapist } =
 router.get("/byId/:id", validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
   const id = req.params.id
   const patient = await Patient.findByPk(id)
-  console.log(patient.lastName)
   res.json(patient)
 })
 

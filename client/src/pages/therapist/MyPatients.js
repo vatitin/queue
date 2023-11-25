@@ -36,7 +36,9 @@ function MyPatients() {
 
   }, [config, authState.status, navigate, patientStatus]);
 
-  const removePatient = async (id) => {
+  const removePatient = async (id, event) => {
+    event.stopPropagation();
+
     const result = await axios.delete(deletePatientWithId(id), config)
     if (result.status === 204) {
       setPatients((prevPatients) => prevPatients.filter((patient) => patient.id !== id));
@@ -73,7 +75,7 @@ function MyPatients() {
               <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.email}</td>
               <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.phoneNumber ? value.phoneNumber : "-"}</td>
               <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.gender ? value.gender : "-"}</td>
-              <td><button type="button" class="btn btn-danger btn-sm" onClick={() => removePatient(value.id)}>Entfernen</button></td>
+              <td onClick={() => {navigate(`/patient/${value.id}`)}}><button type="button" class="btn btn-danger btn-sm" onClick={(e) => removePatient(value.id, e)}>Entfernen</button></td>
             </tr>
           ))}
         </tbody>
