@@ -3,7 +3,6 @@ const router = express.Router();
 const {Therapist, Credential} = require('../models');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
-const {createTokens, isLoggedIn} = require('../middlewares/AuthMiddleware')
 //todo implement CSRF protenction and handle XSS attacks (look up if necessary with cookies as storage)
  
 router.post("/register", async (req, res) => {
@@ -44,7 +43,7 @@ router.post("/register", async (req, res) => {
     })
 });
 
-router.get("/login", isLoggedIn, async (req, res) => {
+router.get("/login", async (req, res) => {
     if (req.cookies.accessToken) {
         therapistCredential = await Credential.findByPk(req.therapistCredentialId)
         //todo check if user in res is necessary

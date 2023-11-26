@@ -40,8 +40,6 @@ function Profile() {
         </div>
 
     );
-    
-
 }
 
 export {Profile}

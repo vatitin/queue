@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const {Therapist, Credential} = require('../models');
-const {validateToken, authTherapistId, isLoggedIn, getIdOfLoggedInTherapist} = require('../middlewares/AuthMiddleware')
+const passport = require('passport');
 
-router.get("/myProfile", validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
+router.get("/myProfile", passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
-    const therapistCredential = await Credential.findByPk(req.therapistCredentialId);
+    const therapistCredential = req.user;
     const therapist = await Therapist.findByPk(therapistCredential.TherapistId)
     const response = {
       email: therapistCredential.email, 

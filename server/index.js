@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const passport = require('passport');
+
+app.use(passport.initialize());
+require('./passport-setup');
 
 app.use(express.json());
 app.use(cors({

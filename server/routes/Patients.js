@@ -2,20 +2,22 @@ const express = require('express');
 const router = express.Router();
 const { getPatients } = require('../services/PatientService')
 const { Therapist, Patient, PatientTherapist } = require('../models');
-const { validateToken, authTherapistId, isLoggedIn, getIdOfLoggedInTherapist } = require('../middlewares/AuthMiddleware')
+const passport = require('passport');
 
-router.get("/byId/:id", validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
+//todo check for all patients that they are patients of the therapist requestng it
+router.get("/byId/:id", passport.authenticate('jwt', { session: false }), async (req, res) => {
   const id = req.params.id
   const patient = await Patient.findByPk(id)
   res.json(patient)
 })
 
-router.get("/:status", validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
+router.get("/:status", passport.authenticate('jwt', { session: false }), async (req, res) => {
   const patientStatus = req.params.status
- 
+  const therapistId = req.user.TherapistId;
+
   try {
-  const patients = await getPatients(req.therapistId, patientStatus)
-      console.log("Patients of therapist with Id:" + req.therapistId)
+  const patients = await getPatients(therapistId, patientStatus)
+      console.log("Patients of therapist with Id:" + therapistId)
       //todo status 200 or 201?
       return res.status(200).json(patients);
     }
@@ -25,9 +27,10 @@ router.get("/:status", validateToken, isLoggedIn, authTherapistId, getIdOfLogged
     }
   })
 
-  router.delete("/deletePatient/:patientId", validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
+  router.delete("/deletePatient/:patientId", passport.authenticate('jwt', { session: false }), async (req, res) => {
     const patientId = req.params.patientId
-    const therapistId = req.therapistId
+    const therapistId = req.user.TherapistId;
+
 
     await PatientTherapist.destroy({where: {
         PatientId: patientId,
@@ -38,8 +41,8 @@ router.get("/:status", validateToken, isLoggedIn, authTherapistId, getIdOfLogged
     res.status(204).json("DELETED PATIENT SUCCESSFULLY")
   }) 
 
-router.post("/addNewPatient/:status",  validateToken, isLoggedIn, authTherapistId, getIdOfLoggedInTherapist, async (req, res) => {
-    const therapistId = req.therapistId;
+router.post("/addNewPatient/:status", passport.authenticate('jwt', { session: false }), async (req, res) => {
+    const therapistId = req.user.TherapistId;
     const patientData = req.body;
     const patientStatus = req.params.status
 
