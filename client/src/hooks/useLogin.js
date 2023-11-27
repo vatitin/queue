@@ -39,8 +39,7 @@ export const useLogin = () => {
             setError(response.error)
         }
         if (response.status === 200) {
-            console.log("stimmt die response?:" + response.email)
-            dispatch({type: 'LOGIN', payload: response})
+            dispatch({type: 'LOGIN', payload: {email: response.data.email, id: response.data.id}})
             
             setIsLoading(false)
         }
