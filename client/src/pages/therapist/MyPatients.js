@@ -1,15 +1,16 @@
-import React, {useContext} from "react";
+import React from "react";
 import axios from "axios";
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useParams } from'react-router-dom';
-import { AuthContext } from "../../helpers/AuthContext"
 import { patientsWithStatus, deletePatientWithId } from "../../endpoints"
+import { useAuthContext } from '../../hooks/useAuthContext'
 
 function MyPatients() {
   const {patientStatus} = useParams();
   const [patients, setPatients] = useState([]);
   const navigate = useNavigate();
-  const { authState } = useContext(AuthContext);
+  //todo check error in useAuhContext
+  const { user, error } = useAuthContext();
 
   const config = useMemo(() => {
     return {
@@ -21,7 +22,7 @@ function MyPatients() {
     }, []) 
 
   useEffect(() => {
-    if (!authState.status) {
+    if (!user) {
       return navigate("/loginTherapist")
     } else if (patientStatus !== "WAITING" && patientStatus !== "ACTIVE") {
       return navigate("*")
@@ -34,7 +35,7 @@ function MyPatients() {
       console.error(error);
     }
 
-  }, [config, authState.status, navigate, patientStatus]);
+  }, [config, user, navigate, patientStatus]);
 
   const removePatient = async (id, event) => {
     event.stopPropagation();
@@ -83,7 +84,9 @@ function MyPatients() {
       <div class="d-grid gap-2 mb-3 col-6 mx-auto" onClick={() => {navigate(`/addNewPatient/${patientStatus}`)}}>
         <button className="btn btn-primary btn-secondary" type="button" >Patient hinzufügen</button>
       </div>
+      {error && <div>{error}</div>}
     </div>
+    
   );
 }
 

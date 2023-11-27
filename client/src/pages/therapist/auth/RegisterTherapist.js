@@ -1,20 +1,13 @@
 import { React } from "react";
 import { useNavigate } from "react-router-dom"
-import { registerTherapist } from "../../../endpoints"
 import {Formik, Form, Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
+import { useSignup } from "../../../hooks/useSignup"
 
 function RegisterTherapist() {
 
+    const { signup, error } = useSignup();
     const navigate = useNavigate();
-
-    const config = {
-        headers: {
-          "Content-Type": "application/json"
-          },
-          withCredentials: true
-        }
 
     const initialValues = {
         email: '',
@@ -22,7 +15,6 @@ function RegisterTherapist() {
         firstName: "",
         lastName: "",
         gender: "",
-        address: "",
     }
 
     const validationSchema = Yup.object().shape({
@@ -39,17 +31,11 @@ function RegisterTherapist() {
         })
     });
 
-    const instance = axios.create({
-        validateStatus: (status) => {
-          return (status >= 200 && status < 300) || status === 409;
-        },
-      })
-
     const onSubmit = (data) => {
-        instance.post(registerTherapist, data, config).then(response => {
-            if (response.status === 201) return navigate('/loginTherapist')
-            if (response.status === 409) return alert("Email existiert bereis")
-        })
+        signup(data)
+        if (!error) {
+            navigate('/loginTherapist')
+        }
     }
     
     return (

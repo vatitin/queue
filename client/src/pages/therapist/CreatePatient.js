@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AuthContext } from '../../helpers/AuthContext';
+import { useAuthContext } from '../../hooks/useAuthContext'
 import { addPatientWithStatus } from '../../endpoints';
 
 function CreatePatient() {
   const { patientStatus } = useParams();
   const navigate = useNavigate();
-  const { authState } = useContext(AuthContext);
+  const { user } = useAuthContext();
 
   const config = {
     headers: {
@@ -39,10 +39,10 @@ function CreatePatient() {
   };
 
   useEffect(() => {
-    if (!authState.status) {
+    if (!user) {
       return navigate('/loginTherapist');
     }
-  }, [authState.status, navigate]);
+  }, [user, navigate]);
 
   return (
     <div className="container">

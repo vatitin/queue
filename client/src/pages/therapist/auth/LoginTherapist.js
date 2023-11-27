@@ -1,67 +1,45 @@
 import{ useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { AuthContext } from "../../../helpers/AuthContext";
-import { React, useContext } from 'react';
-import { loginTherapist } from "../../../endpoints"
+import { React } from 'react';
+import { useLogin } from "../../../hooks/useLogin"
 
 function LoginTherapist() {
-  const {setAuthState} = useContext(AuthContext)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login, error, isLoading } = useLogin()
 
-  const login = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    await login(email, password)
+    navigate("/myPatients/WAITING")
 
-    //todo check if this is necessary
-    const data = {
-      email: email,
-      password: password,
-    };
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json"
-        },
-        withCredentials: true
-    }
-
-    const instance = axios.create({
-      validateStatus: (status) => {
-        return (status >= 200 && status < 300) || status === 401 || status === 403;
-      },
-    })
-
-    try {
-      const response = await instance.post(loginTherapist, data, config)
-      if (response.data.error) return alert(response.data.error)
-      setAuthState( {email: response.data.email, id: response.data.id, status: true} )
-      return navigate(`/myPatients/WAITING`,);
-    } catch (error) {
-      alert(`Ein Fehler ist aufgetreten: ${error}`)
-    }
-  };
+  }
 
   return (
-    <div>
-      <input
-        type="text"
-        onChange={(event) => {
-          setEmail(event.target.value);
-        }}
-        placeholder="Email"
-        autoComplete="email"
-      />
-      <input
-        type="password"
-        onChange={(event) => {
-          setPassword(event.target.value);
-        }}
-        placeholder="Passwort"
-      />
+    <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          onChange={(event) => {
+            setEmail(event.target.value);
+          }}
+          placeholder="Email"
+          autoComplete="email"
+          value={email}
+        />
+        <input
+          type="password"
+          onChange={(event) => {
+            setPassword(event.target.value);
+          }}
+          placeholder="Passwort"
+          value={password}
+        />
 
-      <button onClick={login}>Login</button>
-    </div>
+        <button disabled={isLoading}>Login</button>
+        {error && <div>{error}</div>}
+
+    </form>
   );
 }
 

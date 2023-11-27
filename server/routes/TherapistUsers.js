@@ -3,6 +3,9 @@ const router = express.Router();
 const {Therapist, Credential} = require('../models');
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
+const { sign, verify } = require('jsonwebtoken')
+require('dotenv').config();
+const secretKey = process.env.SECRET_KEY;
 //todo implement CSRF protenction and handle XSS attacks (look up if necessary with cookies as storage)
  
 router.post("/register", async (req, res) => {
@@ -44,10 +47,13 @@ router.post("/register", async (req, res) => {
 });
 
 router.get("/login", async (req, res) => {
-    if (req.cookies.accessToken) {
-        therapistCredential = await Credential.findByPk(req.therapistCredentialId)
+    const token = req.cookies.accessToken;
+    if (token) {
+        const decodedToken = verify(token, secretKey)
+
+        therapistCredential = await Credential.findByPk(decodedToken.id)
         //todo check if user in res is necessary
-        return res.send({loggedIn: true, email: therapistCredential.email, user: req.cookies.user})
+        return res.send({loggedIn: true, email: therapistCredential.email, id: therapistCredential.id})
     } else {
         return res.send({loggedIn: false, user: null})
     }
@@ -67,7 +73,7 @@ router.post("/login", async (req, res) => {
     bcrypt.compare(password, user.password).then(match => {
         if (!match) return res.status(401).json({ error: 'Nutzername oder Passwort ist falsch' });
 
-        const accessToken = createTokens(user);
+        const accessToken = sign({email: user.email, id: user.id}, secretKey)
         res.cookie('accessToken', accessToken, {maxAge: 900000, httpOnly: true,});
         //todo check if this is neccesary compared to above
         //res.cookie('accessToken', accessToken, {maxAge: 900000, httpOnly: true, secure: true});

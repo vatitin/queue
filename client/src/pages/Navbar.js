@@ -1,16 +1,19 @@
 // Navbar.js
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from "../helpers/AuthContext";
-import { Logout } from "./therapist/auth/Logout";
+import { useLogout } from '../hooks/useLogout';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { useNavigate } from'react-router-dom';
 
 const Navbar = () => {
-  const { authState } = useContext(AuthContext);
+  const { user } = useAuthContext();
 
-    const handleLogout = Logout();
-    
+    const navigate = useNavigate();
+    const { logout } = useLogout();
+
     const onLogoutClick = () => {
-      handleLogout();
+      logout()
+      navigate("/")
     };
 
   return (
@@ -21,7 +24,7 @@ const Navbar = () => {
             <li className="nav-item">
               <Link to="/" className="nav-link active" aria-current="page">Home</Link>
             </li>
-              {authState.status && (
+              {user && (
                 <>
                   <li className="nav-item">
                     <Link to="/myPatients/WAITING" className="nav-link active" aria-current="page">Warteliste</Link>
@@ -33,13 +36,13 @@ const Navbar = () => {
               )}
           </ul>
           <ul className="navbar-nav ms-auto">
-            {authState.status ? (
+            {user ? (
               <>
                 <li className="nav-item">
                   <button type="submit" onClick={onLogoutClick} className="nav-link btn btn-link">Logout</button>
                 </li>
                 <li className="nav-item">
-                      <Link to="/myProfile" className="nav-link active" aria-current="page">{authState.email}</Link>
+                      <Link to="/myProfile" className="nav-link active" aria-current="page">{user.email}</Link>
                 </li>
               </>
             ):(

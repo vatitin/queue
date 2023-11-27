@@ -1,15 +1,15 @@
-import React, {useContext} from "react";
+import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {useParams, useNavigate} from'react-router-dom';
-import { AuthContext } from "../../helpers/AuthContext"
+import { useAuthContext } from '../../hooks/useAuthContext'
 import { therapistProfile } from "../../endpoints"
 
 function Profile() {
     
     const navigate = useNavigate();
     const {therapistId} = useParams();
-    const { authState } = useContext(AuthContext);
+    const { user } = useAuthContext()
     const [therapist, setTherapist] = useState([]);
   
     useEffect(() => {
@@ -19,7 +19,7 @@ function Profile() {
               },
               withCredentials: true
       }
-      if (!authState.status) {
+      if (!user) {
         return navigate("/loginTherapist")
       }
       try {
@@ -30,7 +30,7 @@ function Profile() {
         console.error(error);
       }
   
-    }, [therapistId, authState.status, navigate]);
+    }, [therapistId, user, navigate]);
 
     return (
         <div>

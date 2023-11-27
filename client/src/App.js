@@ -10,58 +10,14 @@ import { RegisterTherapist } from "./pages/therapist/auth/RegisterTherapist";
 import { Navbar } from "./pages/Navbar";
 import { Profile } from './pages/therapist/Profile'
 import { PageNotFound } from "./pages/PageNotFound";
-import { AuthContext } from "./helpers/AuthContext"
-import { useState, useEffect } from "react";
-import {loginTherapist} from "./endpoints"
-import axios from 'axios';
+import { AuthContextProvider } from "./context/AuthContext"
 
 function App() {
-
-  const [authState, setAuthState] = useState({
-    email: "",
-    id: 0,
-    status: false,
-  });
-
-  useEffect(() => {
-    console.log("Fetching user login status...");
-    const config = {
-        headers: {
-        "Content-Type": "application/json"
-        },
-        withCredentials: true
-    }
-
-    const instance = axios.create({
-      validateStatus: (status) => {
-        return (status >= 200 && status < 300) || status === 401 || status === 403;
-      },
-    })
-
-    instance.get(loginTherapist, config)
-    .then(response => {
-      console.log("Received response:", response);
-      if (response.data.loggedIn) {
-        console.log("User is logged in");
-        setAuthState({ email: response.data.email, id: response.data.id, status: true });
-      } else if (response.status === 401 || response.status === 403) {
-        console.log("User is not authorized");
-        setAuthState({ email: "", id: 0, status: false });
-      } else {
-        console.log("Error occurred");
-        setAuthState({ email: "", id: 0, status: false });
-        alert("Ein Fehler ist aufgetreten");
-      }
-    })  
-      .catch(error => {
-        console.error('Error checking login status:', error);
-      });
-  }, [setAuthState]);
 
   //todo check if PageNottFound to use without navbar
   return (
     <div className="App">
-      <AuthContext.Provider value={{authState, setAuthState}}>
+      <AuthContextProvider>
         <Router>
           <Navbar/>
           <Routes>
@@ -75,7 +31,7 @@ function App() {
             <Route path="*" element={<PageNotFound/>} />
           </Routes>
         </Router>
-      </AuthContext.Provider>
+      </AuthContextProvider>
     </div>
   );
 }
