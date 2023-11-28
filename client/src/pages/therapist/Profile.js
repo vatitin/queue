@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import {useParams, useNavigate} from'react-router-dom';
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { therapistProfile } from "../../endpoints"
+import Cookies from 'js-cookie';
 
 function Profile() {
     
@@ -19,7 +20,7 @@ function Profile() {
               },
               withCredentials: true
       }
-      if (!user) {
+      if (!Cookies.get("logged_in")) {
         return navigate("/loginTherapist")
       }
       try {

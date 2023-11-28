@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { addPatientWithStatus } from '../../endpoints';
+import Cookies from 'js-cookie';
 
 function CreatePatient() {
   const { patientStatus } = useParams();
@@ -39,7 +40,7 @@ function CreatePatient() {
   };
 
   useEffect(() => {
-    if (!user) {
+    if (!Cookies.get("logged_in")) {
       return navigate('/loginTherapist');
     }
   }, [user, navigate]);
