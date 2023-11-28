@@ -39,25 +39,33 @@ function RegisterTherapist() {
     }
     
     return (
-        <div className="CreatePatientPage">
+        <div className="container">
             <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
                 <Form>
-                    <label>Vorname:</label>
-                    <ErrorMessage name="firstName" component="div" className="error"/>
-                    <Field id="inputPatient" name="firstName" placeholder="Max"/>
+                    <div className="mb-3">
+                        <label htmlFor="firstName" className="form-label">Vorname</label>
+                        <ErrorMessage name="firstName" component="div" className="error"/>
+                        <Field className="form-control" id="firstName" name="firstName" placeholder="Max"/>
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="lastName" className="form-label">Nachname</label>
+                        <ErrorMessage name="lastName" component="div" className="error"/>
+                        <Field className="form-control" id="lastName" name="lastName" placeholder="Mustermann"/>
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="email" className="form-label">Email</label>
+                        <ErrorMessage name="email" component="div" className="error"/>
+                        <Field className="form-control" id="email" name="email" placeholder="max.mustermann@gmail.com"/>
+                    </div>
                     
-                    <label>Nachname:</label>
-                    <ErrorMessage name="lastName" component="div" className="error"/>
-                    <Field id="inputPatient" name="lastName" placeholder="Mustermann"/>
-                    
-                    <label>Email:</label>
-                    <ErrorMessage name="email" component="div" className="error"/>
-                    <Field id="inputPatient" name="email" placeholder="meine@email.com"/>
-                    
-                    <label>Passwort:</label>
-                    <ErrorMessage name="password" component="div" className="error"/>
-                    <Field id="inputPatient" name="password" type="password"/>
-                    
+                    <div className="mb-3">
+                        <label htmlFor="password" className="form-label">Password</label>
+                        <ErrorMessage name="password" component="div" className="error"/>
+                        <Field type="password" className="form-control" id="password" name="password"/>
+                    </div>
+
                     <button type="submit">Registrieren</button>
 
                 </Form>
