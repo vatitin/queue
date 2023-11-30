@@ -11,6 +11,23 @@ router.get("/byId/:id", passport.authenticate('jwt', { session: false }), async 
   res.json(patient)
 })
 
+router.patch("/:id" , passport.authenticate('jwt', { session: false }), async (req, res) => {
+
+  const patientId = req.params.id 
+  const newData = req.body
+
+  try {
+    const patientTherapist = await PatientTherapist.findOne( { where: {PatientId: patientId}} ) 
+    if (!patientTherapist) {
+      return res.status(404).json({ success: false, message: 'Patient konnte nicht gefunden werden' });
+    }
+    patientTherapist.update(newData)
+    res.json({ success: true, data: patientTherapist });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+})
+
 router.get("/:status", passport.authenticate('jwt', { session: false }), async (req, res) => {
   const patientStatus = req.params.status
   const therapistId = req.user.TherapistId;
