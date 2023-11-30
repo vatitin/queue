@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useParams } from'react-router-dom';
-import { patientsWithStatus, deletePatientWithId } from "../../endpoints"
+import { patientsWithStatus, deletePatientWithId, patientWithId } from "../../endpoints"
 import { useAuthContext } from '../../hooks/useAuthContext'
 import Cookies from 'js-cookie';
 
@@ -22,7 +22,6 @@ function MyPatients() {
     }, []) 
 
   const loginStatus = Cookies.get("logged_in")
-  console.log("loginStatus frontend cookie: " + loginStatus)
   useEffect(() => {
     if (!loginStatus) {
       return navigate("/loginTherapist")
@@ -48,6 +47,15 @@ function MyPatients() {
     }
   }
 
+  const updatePatientStatus = async (id, status, event) => {
+    event.stopPropagation();
+
+    const result = await axios.patch(patientWithId(id), {status}, config)
+    if (result.status === 200) {
+      setPatients((prevPatients) => prevPatients.filter((patient) => patient.id !== id));
+    }
+  }
+
   const headLine = () => {
     if (patientStatus === "WAITING") {
       return "Meine Warteliste"
@@ -67,7 +75,7 @@ function MyPatients() {
             <th scope="col">Email</th>
             <th scope="col">Handynummer</th>
             <th scope="col">Geschlecht</th>
-            <th></th>
+            <th scope="col">Statusänderung</th>
           </tr>
         </thead>
         <tbody>
@@ -78,12 +86,18 @@ function MyPatients() {
               <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.email}</td>
               <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.phoneNumber ? value.phoneNumber : "-"}</td>
               <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.gender ? value.gender : "-"}</td>
-              <td onClick={() => {navigate(`/patient/${value.id}`)}}><button type="button" class="btn btn-danger btn-sm" onClick={(e) => removePatient(value.id, e)}>Entfernen</button></td>
+              <td onClick={() => {navigate(`/patient/${value.id}`)}}>
+                <button type="button" className="btn btn-danger btn-sm" onClick={(e) => removePatient(value.id, e)}>Entfernen</button>
+                {(patientStatus === "WAITING") && (
+                  <>
+                      <button type="button" className="btn btn-success btn-sm" onClick={(e) => updatePatientStatus(value.id, "ACTIVE",e)}>Aktiv</button>
+                  </>)}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <div class="d-grid gap-2 mb-3 col-6 mx-auto" onClick={() => {navigate(`/addNewPatient/${patientStatus}`)}}>
+      <div className="d-grid gap-2 mb-3 col-6 mx-auto" onClick={() => {navigate(`/addNewPatient/${patientStatus}`)}}>
         <button className="btn btn-primary btn-secondary" type="button" >Patient hinzufügen</button>
       </div>
     </div>

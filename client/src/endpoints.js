@@ -10,4 +10,5 @@ export const loginTherapist = `${BASE_URL}/therapistAuth/login`
 export const patientById = (id) => `${THERAPIST_PATIENTS_URL}/byId/${id}`
 export const patientsWithStatus = (status) => `${THERAPIST_PATIENTS_URL}/${status}` 
 export const deletePatientWithId = (id) => `${THERAPIST_PATIENTS_URL}/deletePatient/${id}`
+export const patientWithId = (id) => `${THERAPIST_PATIENTS_URL}/${id}`
 export const addPatientWithStatus = (status) => `${THERAPIST_PATIENTS_URL}/addNewPatient/${status}`
