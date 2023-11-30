@@ -87,11 +87,11 @@ function MyPatients() {
               <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.phoneNumber ? value.phoneNumber : "-"}</td>
               <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.gender ? value.gender : "-"}</td>
               <td onClick={() => {navigate(`/patient/${value.id}`)}}>
-                <button type="button" className="btn btn-danger btn-sm" onClick={(e) => removePatient(value.id, e)}>Entfernen</button>
-                {(patientStatus === "WAITING") && (
+              {(patientStatus === "WAITING") && (
                   <>
-                      <button type="button" className="btn btn-success btn-sm" onClick={(e) => updatePatientStatus(value.id, "ACTIVE",e)}>Aktiv</button>
+                    <button type="button" className="btn btn-success btn-sm" onClick={(e) => updatePatientStatus(value.id, "ACTIVE",e)}>Hinzufügen</button>
                   </>)}
+              <button type="button" className="btn btn-danger btn-sm" onClick={(e) => removePatient(value.id, e)}>Entfernen</button>
               </td>
             </tr>
           ))}
