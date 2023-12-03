@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const PatientTherapist = sequelize.define('PatientTherapist', {
-        subscriptionInWaitingList: {
+        sequence: {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
@@ -12,7 +12,11 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       });
-      
+
+      PatientTherapist.associate = (models) => {
+        PatientTherapist.belongsTo(models.Therapist);
+        PatientTherapist.belongsTo(models.Patient);
+    };
       
     return PatientTherapist;
   };

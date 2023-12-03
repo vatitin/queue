@@ -35,7 +35,6 @@ router.get("/:status", passport.authenticate('jwt', { session: false }), async (
   try {
   const patients = await getPatients(therapistId, patientStatus)
       console.log("Patients of therapist with Id:" + therapistId)
-      //todo status 200 or 201?
       return res.status(200).json(patients);
     }
     catch (error) {
@@ -73,7 +72,7 @@ router.post("/addNewPatient/:status", passport.authenticate('jwt', { session: fa
 
       therapist.addPatient(patient, {
         through: {
-          subscriptionInWaitingList: numberOfPatients,
+          sequence: numberOfPatients,
           status: patientStatus
         },
       });

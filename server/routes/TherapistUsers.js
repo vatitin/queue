@@ -52,6 +52,9 @@ router.get("/login", async (req, res) => {
         const decodedToken = verify(token, secretKey)
 
         therapistCredential = await Credential.findByPk(decodedToken.id)
+        if (!therapistCredential) {
+            return res.send({loggedIn: false, user: null})
+        }
         //todo check if user in res is necessary
         return res.send({loggedIn: true, email: therapistCredential.email, id: therapistCredential.id})
     } else {
