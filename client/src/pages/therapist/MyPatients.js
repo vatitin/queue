@@ -70,6 +70,7 @@ function MyPatients() {
       <table className="table table-striped table-hover">
         <thead className="table-light">
           <tr>
+            <th>Nr:</th>
             <th scope="col">Nachname</th>
             <th scope="col">Vorname</th>
             <th scope="col">Email</th>
@@ -80,13 +81,14 @@ function MyPatients() {
         </thead>
         <tbody>
           {patients.map((value) => (
-            <tr>
-              <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.lastName ? value.lastName : "-"}</td>
-              <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.firstName ? value.firstName : "-"}</td>
-              <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.email}</td>
-              <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.phoneNumber ? value.phoneNumber : "-"}</td>
-              <td onClick={() => {navigate(`/patient/${value.id}`)}}>{value.gender ? value.gender : "-"}</td>
-              <td onClick={() => {navigate(`/patient/${value.id}`)}}>
+            <tr onClick={() => {navigate(`/patient/${value.id}`)}}>
+              <td>{value.PatientTherapist.sequence }</td>
+              <td>{value.lastName ? value.lastName : "-"}</td>
+              <td>{value.firstName ? value.firstName : "-"}</td>
+              <td>{value.email}</td>
+              <td>{value.phoneNumber ? value.phoneNumber : "-"}</td>
+              <td>{value.gender ? value.gender : "-"}</td>
+              <td>
               {(patientStatus === "WAITING") && (
                   <>
                     <button type="button" className="btn btn-success btn-sm" onClick={(e) => updatePatientStatus(value.id, "ACTIVE",e)}>Hinzufügen</button>

@@ -13,7 +13,7 @@ const getPatients = async (therapistId, patientStatus) => {
                         where: {
                             status: patientStatus
                         },
-                        attributes: [] // Exclude PatientTherapist attributes from the result
+                        attributes: ['sequence', 'status']
                     }
                 }
             ]
@@ -23,7 +23,9 @@ const getPatients = async (therapistId, patientStatus) => {
             throw new Error('Therapist not found.');
         }
 
-        console.log(JSON.stringify(therapist, null, 2));
+        therapist.Patients.forEach((patient) => {
+            console.log(JSON.stringify(patient, null, 2));
+        })
         
         return therapist.Patients;
     } catch (error) {
