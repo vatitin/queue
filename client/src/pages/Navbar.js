@@ -1,19 +1,18 @@
 // Navbar.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useNavigate } from'react-router-dom';
 import { useSessionContext } from 'supertokens-auth-react/recipe/session';
+import { signOut } from "supertokens-auth-react/recipe/emailpassword";
 
 const Navbar = () => {
     let {userId} = useSessionContext();
 
     //todo get email and use it in component
-    const navigate = useNavigate();
-    //const { logout } = useLogout();
-
-    const onLogoutClick = () => {
-      //logout()
-      //navigate("/")
+    
+    const onLogoutClick = async () => {
+      console.log("ausloggbutton gedrückt")
+      await signOut()
+      window.location.href = "/";
     };
 
   return (
@@ -48,10 +47,7 @@ const Navbar = () => {
             ):(
               <>
               <li className="nav-item">
-                <Link to="/loginTherapist" className="nav-link active" aria-current="page">Login</Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/registerTherapist" className="nav-link active" aria-current="page">Register</Link>
+                <Link to="/auth" className="nav-link active" aria-current="page">Anmelden</Link>
               </li>
               </>
             )}
