@@ -3,14 +3,11 @@ import axios from "axios";
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useParams } from'react-router-dom';
 import { patientsWithStatus, deletePatientWithId, patientWithId } from "../../endpoints"
-import { useAuthContext } from '../../hooks/useAuthContext'
-import Cookies from 'js-cookie';
 
 function MyPatients() {
   const {patientStatus} = useParams();
   const [patients, setPatients] = useState([]);
   const navigate = useNavigate();
-  const { user } = useAuthContext();
 
   const config = useMemo(() => {
     return {
@@ -21,11 +18,8 @@ function MyPatients() {
     }
     }, []) 
 
-  const loginStatus = Cookies.get("logged_in")
   useEffect(() => {
-    if (!loginStatus) {
-      return navigate("/loginTherapist")
-    } else if (patientStatus !== "WAITING" && patientStatus !== "ACTIVE") {
+    if (patientStatus !== "WAITING" && patientStatus !== "ACTIVE") {
       return navigate("*")
     }
     try {
@@ -36,7 +30,7 @@ function MyPatients() {
       console.error(error);
     }
 
-  }, [config, user, loginStatus, navigate, patientStatus]);
+  }, [config, navigate, patientStatus]);
 
   const removePatient = async (id, event) => {
     event.stopPropagation();

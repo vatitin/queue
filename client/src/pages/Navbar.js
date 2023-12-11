@@ -1,19 +1,19 @@
 // Navbar.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useLogout } from '../hooks/useLogout';
-import { useAuthContext } from '../hooks/useAuthContext';
 import { useNavigate } from'react-router-dom';
+import { useSessionContext } from 'supertokens-auth-react/recipe/session';
 
 const Navbar = () => {
-    const { user } = useAuthContext();
+    let {userId} = useSessionContext();
 
+    //todo get email and use it in component
     const navigate = useNavigate();
-    const { logout } = useLogout();
+    //const { logout } = useLogout();
 
     const onLogoutClick = () => {
-      logout()
-      navigate("/")
+      //logout()
+      //navigate("/")
     };
 
   return (
@@ -24,7 +24,7 @@ const Navbar = () => {
             <li className="nav-item">
               <Link to="/" className="nav-link active" aria-current="page">Home</Link>
             </li>
-              {user && (
+              {userId && (
                 <>
                   <li className="nav-item">
                     <Link to="/myPatients/WAITING" className="nav-link active" aria-current="page">Warteliste</Link>
@@ -36,13 +36,13 @@ const Navbar = () => {
               )}
           </ul>
           <ul className="navbar-nav ms-auto">
-            {user ? (
+            {userId ? (
               <>
                 <li className="nav-item">
                   <button type="submit" onClick={onLogoutClick} className="nav-link btn btn-link">Logout</button>
                 </li>
                 <li className="nav-item">
-                      <Link to="/myProfile" className="nav-link active" aria-current="page">{user.email}</Link>
+                      <Link to="/myProfile" className="nav-link active" aria-current="page">{"changeMeuser.email"}</Link>
                 </li>
               </>
             ):(

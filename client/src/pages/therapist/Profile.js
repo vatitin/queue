@@ -2,15 +2,14 @@ import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {useParams, useNavigate} from'react-router-dom';
-import { useAuthContext } from '../../hooks/useAuthContext'
 import { therapistProfile } from "../../endpoints"
-import Cookies from 'js-cookie';
+import { useSessionContext } from 'supertokens-auth-react/recipe/session';
 
 function Profile() {
     
     const navigate = useNavigate();
     const {therapistId} = useParams();
-    const { user } = useAuthContext()
+    let {userId} = useSessionContext();
     const [therapist, setTherapist] = useState([]);
   
     useEffect(() => {
@@ -20,9 +19,6 @@ function Profile() {
               },
               withCredentials: true
       }
-      if (!Cookies.get("logged_in")) {
-        return navigate("/loginTherapist")
-      }
       try {
         axios.get(therapistProfile, config).then((response) => {
           setTherapist(response.data);
@@ -31,7 +27,7 @@ function Profile() {
         console.error(error);
       }
   
-    }, [therapistId, user, navigate]);
+    }, [therapistId, userId, navigate]);
 
     return (
         <div>

@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAuthContext } from '../../hooks/useAuthContext'
 import { addPatientWithStatus } from '../../endpoints';
-import Cookies from 'js-cookie';
 
 function CreatePatient() {
   const { patientStatus } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuthContext();
 
   const config = {
     headers: {
@@ -38,12 +35,6 @@ function CreatePatient() {
       console.error('Error creating patient:', error);
     }
   };
-
-  useEffect(() => {
-    if (!Cookies.get("logged_in")) {
-      return navigate('/loginTherapist');
-    }
-  }, [user, navigate]);
 
   return (
     <div className="container">

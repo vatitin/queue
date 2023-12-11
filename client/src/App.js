@@ -6,24 +6,22 @@ import { Home } from "./pages/Home";
 import CreatePatient from "./pages/therapist/CreatePatient";
 import { Patient } from "./pages/therapist/Patient";
 import { MyPatients } from "./pages/therapist/MyPatients";
-import { LoginTherapist } from "./pages/therapist/auth/LoginTherapist";
-import { RegisterTherapist } from "./pages/therapist/auth/RegisterTherapist";
 import { Navbar } from "./pages/Navbar";
 import { Profile } from './pages/therapist/Profile'
 import { PageNotFound } from "./pages/PageNotFound";
-import { AuthContextProvider } from "./context/AuthContext"
 import SuperTokens, { SuperTokensWrapper } from "supertokens-auth-react";
 import EmailPassword from "supertokens-auth-react/recipe/emailpassword";
 import Session from "supertokens-auth-react/recipe/session";
 import { getSuperTokensRoutesForReactRouterDom } from "supertokens-auth-react/ui";
 import { EmailPasswordPreBuiltUI } from "supertokens-auth-react/recipe/emailpassword/prebuiltui";
+import { SessionAuth } from "supertokens-auth-react/recipe/session";
 
 SuperTokens.init({
     appInfo: {
         // learn more about this on https://supertokens.com/docs/emailpassword/appinfo
         appName: "Queue app",
-        apiDomain: "http://localhost:3000",
-        websiteDomain: "http://localhost:3001",
+        apiDomain: "http://localhost:3001",
+        websiteDomain: "http://localhost:3000",
         apiBasePath: "/auth",
         websiteBasePath: "/auth",
     },
@@ -38,24 +36,23 @@ function App() {
   //todo check if PageNottFound to use without navbar
   return (
     <div className="App">
-      <AuthContextProvider>
       <SuperTokensWrapper>
         <Router>
-          <Navbar/>
+
+        <Navbar/>
+
           <Routes>
+          {getSuperTokensRoutesForReactRouterDom(reactRouterDom, [EmailPasswordPreBuiltUI])}
             <Route path="/" element={<Home/>} />
-            {getSuperTokensRoutesForReactRouterDom(reactRouterDom, [EmailPasswordPreBuiltUI])}
-            <Route path="/loginTherapist" element={<LoginTherapist/>} />
-            <Route path="/registerTherapist" element={<RegisterTherapist/>} />
-            <Route path="/addNewPatient/:patientStatus" element={<CreatePatient/>} />
-            <Route path="/patient/:id" element={<Patient/>} />
-            <Route path="/myPatients/:patientStatus" element={<MyPatients/>} />
-            <Route path="/myProfile" element={<Profile/>} />
+            {/*SessionAuth wrapped components only render if logged in*/}
+            <Route path="/addNewPatient/:patientStatus" element={<SessionAuth><CreatePatient/></SessionAuth>} />
+            <Route path="/patient/:id" element={<SessionAuth><Patient/></SessionAuth>} />
+            <Route path="/myPatients/:patientStatus" element={<SessionAuth><MyPatients/></SessionAuth>} />
+            <Route path="/myProfile" element={<SessionAuth><Profile/></SessionAuth>} />
             <Route path="*" element={<PageNotFound/>} />
           </Routes>
         </Router>
       </SuperTokensWrapper>
-      </AuthContextProvider>
     </div>
   );
 }
