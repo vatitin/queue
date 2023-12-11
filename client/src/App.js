@@ -26,7 +26,17 @@ SuperTokens.init({
         websiteBasePath: "/auth",
     },
     recipeList: [
-        EmailPassword.init(),
+        EmailPassword.init({
+          style: `
+              [data-supertokens~=superTokensBranding] {
+                  display: none
+              }
+              [data-supertokens~=container] {
+                --palette-primary: 66, 201, 151;
+                --palette-primaryBorder: 48, 175, 132;
+              }
+          `
+      }),
         Session.init()
     ]
 });
