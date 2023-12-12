@@ -19,7 +19,7 @@ function MyPatients() {
     }, []) 
 
   useEffect(() => {
-    if (patientStatus !== "WAITING" && patientStatus !== "ACTIVE") {
+    if (patientStatus !== "W" && patientStatus !== "A") {
       return navigate("*")
     }
     try {
@@ -51,7 +51,7 @@ function MyPatients() {
   }
 
   const headLine = () => {
-    if (patientStatus === "WAITING") {
+    if (patientStatus === "W") {
       return "Meine Warteliste"
     } else {
       return "Meine Patienten"
@@ -76,16 +76,16 @@ function MyPatients() {
         <tbody>
           {patients.map((value) => (
             <tr onClick={() => {navigate(`/patient/${value.id}`)}}>
-              <td>{value.PatientTherapist.sequence }</td>
+              <td>{value.sequence }</td>
               <td>{value.lastName ? value.lastName : "-"}</td>
               <td>{value.firstName ? value.firstName : "-"}</td>
               <td>{value.email}</td>
               <td>{value.phoneNumber ? value.phoneNumber : "-"}</td>
               <td>{value.gender ? value.gender : "-"}</td>
               <td>
-              {(patientStatus === "WAITING") && (
+              {(patientStatus === "W") && (
                   <>
-                    <button type="button" className="btn btn-success btn-sm" onClick={(e) => updatePatientStatus(value.id, "ACTIVE",e)}>Hinzufügen</button>
+                    <button type="button" className="btn btn-success btn-sm" onClick={(e) => updatePatientStatus(value.id, "A",e)}>Hinzufügen</button>
                   </>)}
               <button type="button" className="btn btn-danger btn-sm" onClick={(e) => removePatient(value.id, e)}>Entfernen</button>
               </td>

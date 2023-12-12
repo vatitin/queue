@@ -26,10 +26,10 @@ const Navbar = () => {
               {userId && (
                 <>
                   <li className="nav-item">
-                    <Link to="/myPatients/WAITING" className="nav-link active" aria-current="page">Warteliste</Link>
+                    <Link to="/myPatients/W" className="nav-link active" aria-current="page">Warteliste</Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/myPatients/ACTIVE" className="nav-link active" aria-current="page">Patienten</Link>
+                    <Link to="/myPatients/A" className="nav-link active" aria-current="page">Patienten</Link>
                   </li>
                 </>
               )}
