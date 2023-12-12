@@ -1,22 +1,40 @@
 // Navbar.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSessionContext } from 'supertokens-auth-react/recipe/session';
 import { signOut } from "supertokens-auth-react/recipe/emailpassword";
+import axios from 'axios';
+import { therapistProfile } from '../endpoints';
 
 const Navbar = () => {
     let {userId} = useSessionContext();
-
+    const [email, setEmail] = useState('');
     //todo get email and use it in component
     
+    useEffect(() => {
+      const config = {
+        headers: {
+            "Content-Type": "application/json"
+            },
+            withCredentials: true
+      }
+      try {
+        axios.get(therapistProfile, config).then((response) => {
+          setEmail(response.data.email);
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }, [setEmail])
+
     const onLogoutClick = async () => {
-      console.log("ausloggbutton gedrückt")
       await signOut()
       window.location.href = "/";
     };
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+      {console.log("email: " + email)}
       <div className="container-fluid">
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0" >
@@ -41,7 +59,7 @@ const Navbar = () => {
                   <button type="submit" onClick={onLogoutClick} className="nav-link btn btn-link">Logout</button>
                 </li>
                 <li className="nav-item">
-                      <Link to="/myProfile" className="nav-link active" aria-current="page">{"changeMeuser.email"}</Link>
+                      <Link to="/myProfile" className="nav-link active" aria-current="page">{email}</Link>
                 </li>
               </>
             ):(

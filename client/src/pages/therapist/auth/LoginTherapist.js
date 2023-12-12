@@ -13,7 +13,6 @@ function LoginTherapist() {
     e.preventDefault()
     await login(email, password)
     navigate("/myPatients/W")
-
   }
 
   return (
