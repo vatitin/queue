@@ -18,9 +18,11 @@ const Navbar = () => {
             withCredentials: true
       }
       try {
-        axios.get(therapistProfile, config).then((response) => {
-          setEmail(response.data.email);
-        });
+        if (userId) {
+          axios.get(therapistProfile, config).then((response) => {
+            setEmail(response.data.email);
+          });
+        }
       } catch (error) {
         console.error(error);
       }
