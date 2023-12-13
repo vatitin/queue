@@ -48,9 +48,7 @@ function App() {
     <div className="App">
       <SuperTokensWrapper>
         <Router>
-
         <Navbar/>
-
           <Routes>
           {getSuperTokensRoutesForReactRouterDom(reactRouterDom, [EmailPasswordPreBuiltUI])}
             <Route path="/" element={<Home/>} />
