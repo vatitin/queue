@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useParams } from'react-router-dom';
-import { patientsWithStatus, deletePatientWithId, patientWithId } from "../../endpoints"
+import { patientsWithStatus, deletePatientWithId, updatePatient } from "../../endpoints"
 
 function MyPatients() {
   const {patientStatus} = useParams();
@@ -44,7 +44,7 @@ function MyPatients() {
   const updatePatientStatus = async (id, status, event) => {
     event.stopPropagation();
 
-    const result = await axios.patch(patientWithId(id), {status}, config)
+    const result = await axios.patch(updatePatient(id, status), config)
     if (result.status === 200) {
       setPatients((prevPatients) => prevPatients.filter((patient) => patient.id !== id));
     }
