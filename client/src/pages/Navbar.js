@@ -5,6 +5,7 @@ import { useSessionContext } from 'supertokens-auth-react/recipe/session';
 import { signOut } from "supertokens-auth-react/recipe/emailpassword";
 import axios from 'axios';
 import { therapistProfile } from '../endpoints';
+import { AppRoutes } from '../constants';
 
 const Navbar = () => {
     let {userId} = useSessionContext();
@@ -44,10 +45,10 @@ const Navbar = () => {
               {userId && (
                 <>
                   <li className="nav-item">
-                    <Link to="/myPatients/W" className="nav-link active" aria-current="page">Warteliste</Link>
+                    <Link to={AppRoutes.myWaitingPatients} className="nav-link active" aria-current="page">Warteliste</Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/myPatients/A" className="nav-link active" aria-current="page">Patienten</Link>
+                    <Link to={AppRoutes.myActivePatients} className="nav-link active" aria-current="page">Patienten</Link>
                   </li>
                 </>
               )}

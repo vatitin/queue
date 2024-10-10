@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useParams } from'react-router-dom';
 import { patientsWithStatus, deletePatientWithId, updatePatient } from "../../endpoints"
+import { StatusType } from "../../constants";
 
 function MyPatients() {
   const {patientStatus} = useParams();
@@ -19,7 +20,7 @@ function MyPatients() {
     }, []) 
 
   useEffect(() => {
-    if (patientStatus !== "W" && patientStatus !== "A") {
+    if (patientStatus !== StatusType.WAITING && patientStatus !== StatusType.ACTIVE) {
       return navigate("*")
     }
     try {
@@ -51,7 +52,7 @@ function MyPatients() {
   }
 
   const headLine = () => {
-    if (patientStatus === "W") {
+    if (patientStatus === patientStatus.WAITING) {
       return "Meine Warteliste"
     } else {
       return "Meine Patienten"
@@ -83,9 +84,9 @@ function MyPatients() {
               <td>{value.phoneNumber ? value.phoneNumber : "-"}</td>
               <td>{value.gender ? value.gender : "-"}</td>
               <td>
-              {(patientStatus === "W") && (
+              {(patientStatus === StatusType.WAITING) && (
                   <>
-                    <button type="button" className="btn btn-success btn-sm" onClick={(e) => updatePatientStatus(value.id, "A",e)}>Hinzufügen</button>
+                    <button type="button" className="btn btn-success btn-sm" onClick={(e) => updatePatientStatus(value.id, StatusType.ACTIVE,e)}>Hinzufügen</button>
                   </>)}
               <button type="button" className="btn btn-danger btn-sm" onClick={(e) => removePatient(value.id, e)}>Entfernen</button>
               </td>
