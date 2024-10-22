@@ -40,36 +40,97 @@ function CreatePatient() {
     <div className="container">
       <form onSubmit={onSubmit}>
         <div className="mb-3">
-            <label htmlFor="firstName" className="form-label">Vorname</label>
-            <input className="form-control" id="firstName" name="firstName" placeholder="Max" value={formData.firstName} onChange={handleChange}/>
-        </div>
-
-        <div className="mb-3"> 
-            <label htmlFor="lastName" className="form-label">Nachname</label>
-            <input className="form-control" id="lastName" name="lastName" placeholder="Mustermann" value={formData.lastName} onChange={handleChange}/>
+          <label htmlFor="firstName" className="form-label">
+            Vorname
+          </label>
+          <input
+            className="form-control"
+            id="firstName"
+            name="firstName"
+            placeholder="Max"
+            value={formData.firstName}
+            onChange={handleChange}
+          />
         </div>
 
         <div className="mb-3">
-            <label htmlFor="email">Email</label>
-            <input className="form-control" id="email" name="email" placeholder="meine@email.com" value={formData.email} onChange={handleChange}/>
+          <label htmlFor="lastName" className="form-label">
+            Nachname
+          </label>
+          <input
+            className="form-control"
+            id="lastName"
+            name="lastName"
+            placeholder="Mustermann"
+            value={formData.lastName}
+            onChange={handleChange}
+          />
         </div>
 
         <div className="mb-3">
-            <label htmlFor="phoneNumber">Handynummer</label>
-            <input className="form-control" id="phoneNumber" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange}/>
+          <label htmlFor="email">Email</label>
+          <input
+            className="form-control"
+            id="email"
+            name="email"
+            placeholder="meine@email.com"
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="phoneNumber">Handynummer</label>
+          <input
+            className="form-control"
+            id="phoneNumber"
+            name="phoneNumber"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+          />
         </div>
 
         <div className="mb-3">
           <label className="d-block">Geschlecht:</label>
 
-          <input type="radio" className="btn-check" id="genderM" name="gender" value="M" autoComplete="off" onChange={handleChange}/>
-          <label className="btn btn-outline-secondary" htmlFor="genderM">Männlich</label>
+          <input
+            type="radio"
+            className="btn-check"
+            id="genderM"
+            name="gender"
+            value="M"
+            autoComplete="off"
+            onChange={handleChange}
+          />
+          <label className="btn btn-outline-secondary" htmlFor="genderM">
+            Männlich
+          </label>
 
-          <input type="radio" className="btn-check" id="genderW" name="gender" value="W" autoComplete="off" onChange={handleChange}/>
-          <label className="btn btn-outline-secondary" htmlFor="genderW">Weiblich</label>
+          <input
+            type="radio"
+            className="btn-check"
+            id="genderW"
+            name="gender"
+            value="W"
+            autoComplete="off"
+            onChange={handleChange}
+          />
+          <label className="btn btn-outline-secondary" htmlFor="genderW">
+            Weiblich
+          </label>
 
-          <input type="radio" className="btn-check" id="genderD" name="gender" value="D" autoComplete="off" onChange={handleChange}/>
-          <label className="btn btn-outline-secondary" htmlFor="genderD">Divers</label>
+          <input
+            type="radio"
+            className="btn-check"
+            id="genderD"
+            name="gender"
+            value="D"
+            autoComplete="off"
+            onChange={handleChange}
+          />
+          <label className="btn btn-outline-secondary" htmlFor="genderD">
+            Divers
+          </label>
         </div>
 
         <button type="submit">Hinzufügen</button>
