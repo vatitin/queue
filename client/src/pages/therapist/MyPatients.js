@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { StatusType } from '../../constants';
 import { PatientRow } from './PatientRow';
 import { fetchPatientsWithStatus, deletePatient, patchPatientStatus } from '../../API';
+import { HttpStatusCode } from 'axios';
 
 function MyPatients() {
   const { patientStatus } = useParams();
@@ -34,7 +35,7 @@ function MyPatients() {
   const handleRemovePatient = async (id, event) => {
     event.stopPropagation();
     const result = await deletePatient(id, config);
-    if (result.status === 204) {
+    if (result.status === HttpStatusCode.Ok) {
       setPatients((prevPatients) => prevPatients.filter((patient) => patient.id !== id));
     }
   };
@@ -42,7 +43,7 @@ function MyPatients() {
   const handleUpdatePatientStatus = async (id, status, event) => {
     event.stopPropagation();
     const result = await patchPatientStatus(id, status, config);
-    if (result.status === 200) {
+    if (result.status === HttpStatusCode.Ok) {
       setPatients((prevPatients) => prevPatients.filter((patient) => patient.id !== id));
     }
   };

@@ -7,7 +7,7 @@ export const patientById = (id) => `${THERAPIST_PATIENTS_URL}/byId/${id}`;
 export const patientsWithStatus = (status) =>
   `${THERAPIST_PATIENTS_URL}/${status}`;
 export const deletePatientWithId = (id) =>
-  `${THERAPIST_PATIENTS_URL}/deletePatient/${id}`;
+  `${BASE_URL}/therapist/removePatient/${id}`;
 export const updatePatient = (id, status) =>
   `${BASE_URL}/therapist/updatePatient/${id}/${status}`;
 export const addPatientWithStatus = (status) =>
