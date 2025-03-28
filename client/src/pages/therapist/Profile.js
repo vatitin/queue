@@ -1,36 +1,30 @@
 import React from 'react';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { therapistProfile } from '../../endpoints';
-import { useSessionContext } from 'supertokens-auth-react/recipe/session';
+import keycloakService from '../../services/KeycloakService';
+import apiClient from '../../services/APIService';
 
 function Profile() {
   const navigate = useNavigate();
-  const { therapistId } = useParams();
-  let { userId } = useSessionContext();
+
+  const userId = keycloakService.getUserId;
   const [therapist, setTherapist] = useState([]);
 
   useEffect(() => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      withCredentials: true,
-    };
     try {
-      axios.get(therapistProfile, config).then((response) => {
+      apiClient.get(therapistProfile).then((response) => {
         setTherapist(response.data);
       });
     } catch (error) {
       console.error(error);
     }
-  }, [therapistId, userId, navigate]);
+  }, [userId, navigate]);
 
   return (
     <div>
-      <div>{therapist.lastName ? therapist.lastName : '-'}</div>
-      <div>{therapist.firstName ? therapist.firstName : '-'}</div>
+      <div>{therapist.family_name ? therapist.family_name : '-'}</div>
+      <div>{therapist.given_name ? therapist.given_name : '-'}</div>
       <div>{therapist.email}</div>
     </div>
   );

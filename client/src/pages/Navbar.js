@@ -1,36 +1,30 @@
 // Navbar.js
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useSessionContext } from 'supertokens-auth-react/recipe/session';
-import { signOut } from 'supertokens-auth-react/recipe/emailpassword';
-import axios from 'axios';
 import { therapistProfile } from '../endpoints';
 import { AppRoutes } from '../constants';
+import KeycloakService from '../services/KeycloakService';
+import apiClient from '../services/APIService';
 
 const Navbar = () => {
-  let { userId } = useSessionContext();
-  const [email, setEmail] = useState('');
+  const userId = KeycloakService.getUserId();
+  const [email, setEmail] = useState(null)
 
   useEffect(() => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      withCredentials: true,
-    };
-    try {
-      if (userId) {
-        axios.get(therapistProfile, config).then((response) => {
-          setEmail(response.data.email);
-        });
+    const fetchProfile = async () => {
+      try {
+        const response = await apiClient.get(therapistProfile);
+        setEmail(response.data.email);
+      } catch (error) {
+        console.error('Error fetching therapist profile:', error);
       }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [userId]);
+    };
 
-  const onLogoutClick = async () => {
-    await signOut();
+    fetchProfile();
+  }, []);
+
+  const onLogoutClick = () => {
+    KeycloakService.logout();
     window.location.href = '/';
   };
 
