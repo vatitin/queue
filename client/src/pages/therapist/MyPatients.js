@@ -1,19 +1,15 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { StatusType } from '../../constants';
 import { PatientRow } from './PatientRow';
-import { fetchPatientsWithStatus, deletePatient, patchPatientStatus } from '../../API';
 import { HttpStatusCode } from 'axios';
+import apiClient from '../../services/APIService';
+import { deletePatientWithId, patientsWithStatus, updatePatient } from '../../endpoints';
 
 function MyPatients() {
   const { patientStatus } = useParams();
   const [patients, setPatients] = useState([]);
   const navigate = useNavigate();
-
-  const config = useMemo(() => ({
-    headers: { 'Content-Type': 'application/json' },
-    withCredentials: true,
-  }), []);
 
   useEffect(() => {
     if (patientStatus !== StatusType.WAITING && patientStatus !== StatusType.ACTIVE) {
@@ -22,7 +18,8 @@ function MyPatients() {
 
     const loadPatients = async () => {
       try {
-        const response = await fetchPatientsWithStatus(patientStatus, config);
+        const response = await apiClient.get(patientsWithStatus(patientStatus));
+        console.log("response:  " + response);
         setPatients(response.data);
       } catch (error) {
         console.error(error);
@@ -30,11 +27,11 @@ function MyPatients() {
     };
 
     loadPatients();
-  }, [config, navigate, patientStatus]);
+  }, [navigate, patientStatus]);
 
   const handleRemovePatient = async (id, event) => {
     event.stopPropagation();
-    const result = await deletePatient(id, config);
+    const result = await apiClient.delete(deletePatientWithId(id));
     if (result.status === HttpStatusCode.Ok) {
       setPatients((prevPatients) => prevPatients.filter((patient) => patient.id !== id));
     }
@@ -42,7 +39,7 @@ function MyPatients() {
 
   const handleUpdatePatientStatus = async (id, status, event) => {
     event.stopPropagation();
-    const result = await patchPatientStatus(id, status, config);
+    const result = await apiClient.patch(updatePatient(id, status));
     if (result.status === HttpStatusCode.Ok) {
       setPatients((prevPatients) => prevPatients.filter((patient) => patient.id !== id));
     }

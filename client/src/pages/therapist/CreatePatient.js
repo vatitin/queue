@@ -1,18 +1,11 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addPatientWithStatus } from '../../endpoints';
+import apiClient from '../../services/APIService';
 
 function CreatePatient() {
   const { patientStatus } = useParams();
   const navigate = useNavigate();
-
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    withCredentials: true,
-  };
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -28,7 +21,7 @@ function CreatePatient() {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(addPatientWithStatus(patientStatus), formData, config);
+      await apiClient.post(addPatientWithStatus(patientStatus), formData);
       navigate(`/myPatients/${patientStatus}`);
     } catch (error) {
       // Handle error, e.g., show a message to the user
