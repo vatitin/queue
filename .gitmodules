@@ -1,0 +1,3 @@
+[submodule "queueAPI"]
+  path = API/queueAPI
+  url = https://github.com/vatitin/queueAPI
